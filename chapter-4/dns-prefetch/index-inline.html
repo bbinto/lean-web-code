@@ -2,22 +2,23 @@
 <head>
 <meta charset=utf-8 />
 <title>DNS-prefetcg Scripts</title>
-	<script> 	
-var sNew = document.createElement("script");
-sNew.async = true;
-sNew.src = "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"; 
-sNew.rel = "dns-prefetch";
-var s0 = document.getElementsByTagName('script')[0];
-s0.parentNode.insertBefore(sNew, s0);
-</script>
-
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+<script>
+var link = document.createElement('link');
+link.setAttribute('rel', 'prefetch');
+link.setAttribute('href', 'http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js');
+document.getElementsByTagName('head')[0].appendChild(link);
+</script>
 
 </head>
 <body>
 	<h1>Page 1</h1>
 	<p>Hello!</p>
 
+<script>
+$.jquery();
+</script>
 
 
 </body>
