@@ -1,9 +1,9 @@
 grunt-magic
 ===========
 
-This is the repository for the sample file used in the blog post "'Grunt' your way through front-end performance optimization".
+This is the repository for the sample file used in my book Lean websites for Chapter 4 - Bootcamp.
 
-If you want more info on this repo, please check out http://wp.me/p2cJg-9L.
+If you want more info on this repo, please check out my previous blog post http://wp.me/p2cJg-9L (the links in the blog post reference to an earlier version of the grunt-magic test).
 
 This repo is supposed to illustrate how you can use grunt to automatically optimize your front-end deployment.
 
