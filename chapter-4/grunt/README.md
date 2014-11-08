@@ -9,9 +9,10 @@ This repo is supposed to illustrate how you can use grunt to automatically optim
 
 
 URL to sample page
-- Without magic (http://www.cbc.ca/m/0/tools/perf/grunt/without/magic.html)
-- With magic (http://www.cbc.ca/m/0/tools/perf/grunt/without/magic.html)
+- Without magic (http://bbinto.github.io/lean-web-code/chapter-4/grunt/without/magic.html)
+- With magic (http://bbinto.github.io/lean-web-code/chapter-4/grunt/with/magic.html)
 
 WebpageTest Results
-- Without magic: http://www.webpagetest.org/result/130803_Y8_7VW/
-- With magic: http://www.webpagetest.org/result/130803_JE_7RX/
+- Without magic: http://www.webpagetest.org/result/141108_06_EHB/
+- With magic: http://www.webpagetest.org/result/141108_JB_EN8/
+- Video comparison: http://www.webpagetest.org/video/compare.php?tests=141108_06_EHB%2C141108_JB_EN8&thumbSize=200&ival=100&end=visual
