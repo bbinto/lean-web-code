@@ -99,15 +99,6 @@ module.exports = function(grunt) {
         }
       }
     },
-   imageEmbed: {
-    dist: {
-      src: [ "<%= pkg.src %>/css/exclude/datauri.css" ],
-      dest: "<%= pkg.src %>/css/temp/yeah.css",
-      options: {
-        deleteAfterEncoding : false
-      },
-    },
-  },
   htmlcompressor: {
       compile: {
         files: {
@@ -136,7 +127,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-usemin');
   grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks("grunt-image-embed");
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-closure-compiler');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
@@ -147,6 +137,6 @@ module.exports = function(grunt) {
 
 
   // run tasks in this order
-  grunt.registerTask('default', ['clean', 'concat', 'uglify', 'cssmin', 'imagemin','montage', 'copy', 'imageEmbed', 'processhtml', 'useminPrepare', 'usemin', 'htmlcompressor','exec:spofcheck']);
+  grunt.registerTask('default', ['clean', 'concat', 'uglify', 'cssmin', 'imagemin','montage', 'copy', 'processhtml', 'useminPrepare', 'usemin', 'htmlcompressor','exec:spofcheck']);
  
  }
