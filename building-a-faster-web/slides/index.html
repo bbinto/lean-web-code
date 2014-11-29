@@ -1,0 +1,1506 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Optimising the Critical Rendering Path</title>
+
+		<meta name="description" content="Building a faster web - Optimising your websites performance.">
+		<meta name="author" content="Patrick Hamann">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/ph-sass-conf.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1 class="main-title rhombus">
+                        <div class="rhombus-reset">Optimising the Critical Rendering Path</div>
+                    </h1>
+					<h3 class="main-title rhombus--left">
+                        <div class="rhombus-reset">SassConf 2014</div>
+                    </h3>
+
+                    <p>
+                        By <a href="http://twitter.com/patrickhamann">Patrick Hamann</a> & <a href="http://www.sassconf.com/">SassConf</a>
+                    </p>
+
+                    <aside class="notes">
+                        Introduce yourself
+                    </aside>
+
+                    <footer>
+
+                    </footer>
+				</section>
+
+				<section>
+					<h2 class="page-title rhombus">
+                        <div class="rhombus-reset">What we are going to cover</div>
+                    </h2>
+
+                    <ul>
+                        <li>Introduction</li>
+                        <li>Network</li>
+                        <li>Critical rendering path</li>
+                        <li>Layout and paint</li>
+                        <li>Summary</li>
+                    </ul>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+
+					<aside class="notes">
+						Explain structure
+					</aside>
+				</section>
+
+<!--------------------------------------------------------------------------------
+ * INTRODUCTION
+ -------------------------------------------------------------------------------->
+
+                <section data-state="page-slate--shade-1">
+                    <h2 class="rhombus rhombus--accent">
+                        <div class="rhombus-reset">Introduction</div>
+                    </h2>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+
+                    <aside class="notes">
+
+                    </aside>
+                </section>
+
+                <section data-state="page--shade-1">
+                    <h3 class="rhombus">
+                        <div class="rhombus-reset">Page weight is increasing</div>
+                    </h3>
+
+                    <div class="rhombus rhombus--left rhombus--image">
+                        <figure class="rhombus-reset">
+                            <img src="/img/average-bytes.png" alt=""/>
+                            <figcaption>Source: HTTP Archive – October 2014</figcaption>
+                        </figure>
+                    </div>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+                    <aside class="notes">
+                        1.6MB as of last week
+                    </aside>
+                </section>
+
+                <section data-state="page--orange">
+                    <h3 class="rhombus">
+                        <div class="rhombus-reset">User load time expectations are decreasing</div>
+                    </h3>
+
+                    <div class="rhombus rhombus--left rhombus--image">
+                        <figure class="rhombus-reset">
+                            <img class="u-maxed" src="/img/user-load-time.png" alt=""/>
+                            <figcaption>Source: Web Performance Today - March 2013</figcaption>
+                        </figure>
+                    </div>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Average page load time is 3-5secs
+                    </aside>
+                </section>
+
+                <section data-state="page--orange">
+                    <h3 class="rhombus">
+                        <div class="rhombus-reset">Impact on revenue</div>
+                    </h3>
+
+                    <ul class="list--large">
+                        <li>Amazon found that it increased revenue by <strong>1%</strong> for every <strong>100 milliseconds</strong>of improvement.</li>
+                        <li>Shopzilla sped up its average page load time from 6 seconds to <strong>1.2 seconds</strong> and experienced a <strong>12% increase</strong> in revenue and a <strong>25%</strong> increase in page views.</li>
+                        <li>Mozilla shaved <strong>2.2 seconds</strong> off their landing pages, thereby increasing download conversions by <strong>15.4%</strong>, which they estimate will result in <strong>60 million</strong> more Firefox downloads per year.</li>
+                    </ul>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        But what about impact on revenue?
+                        Amazon increased revenue by 1% for 100ms increase
+                    </aside>
+                </section>
+
+                <section data-state="page--orange">
+                    <h3 class="rhombus">
+                        <div class="rhombus-reset">User perception</div>
+                    </h3>
+
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Delay</th>
+                            <th>User perception</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="table__row--1">
+                            <td class="table__cell--bold">0-100ms</td>
+                            <td>Instant</td>
+                        </tr>
+                            <tr class="table__row--2">
+                                <td class="table__cell--bold">100-300ms</td>
+                                <td>Small perceptible delat</td>
+                            </tr>
+                            <tr class="table__row--3">
+                                <td lass="table__cell--bold">300-1000ms</td>
+                                <td>Machine is working</td>
+                            </tr>
+                            <tr class="table__row--4">
+                                <td lass="table__cell--bold">1000+ms</td>
+                                <td>Likely mental context switch</td>
+                            </tr>
+                            <tr class="table__row--5">
+                                <td lass="table__cell--bold">10,000+ms</td>
+                                <td>Task is abandoned</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Cognitive study, high performance browser networking
+                        1000ms
+                        TV remote
+                    </aside>
+                </section>
+
+                <section data-state="page-slate--accent-1">
+                    <h1 class="rhombus rhombus--accent">
+                        <div class="rhombus-reset">1000ms</div>
+                    </h1>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+
+                    <aside class="notes">
+                        This leaves us with an 1000ms budget for every interaction.
+                        We have to start thinking in milliseconds not seconds.
+                    </aside>
+                </section>
+
+                <section data-state="page-slate--accent-1">
+                    <h1 class="rhombus rhombus--accent">
+                        <div class="rhombus-reset">Measure, analyse, optimise and repeat.</div>
+                    </h1>
+
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        The performance workflow.
+                        You MUST test/benchmark your own application
+                        Correlate to KPIs
+                    </aside>
+                </section>
+
+                <section data-state="page--orange">
+                    <h3 class="rhombus">
+                        <div class="rhombus-reset">Critical rendering path</div>
+                    </h3>
+
+                    <div class="rhombus rhombus--left rhombus--image">
+                        <figure class="rhombus-reset">
+                            <img class="u-unstyled" src="/img/path.png" alt="Critical rendering path"/>
+                        </figure>
+                    </div>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Performance can be broken down into this flow.
+                    </aside>
+                </section>
+
+<!--------------------------------------------------------------------------------
+ * NETWORK
+ -------------------------------------------------------------------------------->
+
+                <section data-state="page-slate--shade-2">
+                    <h1 class="rhombus rhombus--accent">
+                        <div class="rhombus-reset">Network</div>
+                    </h1>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+                    <aside class="notes">
+                        So lets dive deeper into how browser networking works
+                    </aside>
+                </section>
+
+				<section data-state="page--magenta">
+                    <h3 class="rhombus">
+                        <div class="rhombus-reset">Anatomy of a network request</div>
+                    </h3>
+
+                    <div class="rhombus rhombus--left rhombus--image">
+                        <figure class="rhombus-reset">
+                            <img class="u-maxed" src="/img/network-request.png" alt="Network request"/>
+                            <figcaption>Source: http://www.webpagetest.org/</figcaption>
+                        </figure>
+                    </div>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        DNS = Convert hostname to ip address
+                        Socket = 3 way TCP handshake (even longer with TLS)
+                        HTTP = HTTP request for resource (Time-to-first-byte)
+                        Download
+                    </aside>
+				</section>
+
+                <section data-state="page--magenta">
+                    <h3 class="rhombus"><div class="rhombus-reset">Mobile network request latency</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">
+                        <figure class="rhombus-reset">
+                            <img class="u-maxed u-unstyled" src="/img/mobile-latency.png" alt="Network request"/>
+                            <figcaption>Source: Google insights - https://developers.google.com/speed/docs/insights/mobile</figcaption>
+                        </figure>
+                    </div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        <b>Latency is the bottleneck for web performance.</b><br/>
+                        We need to understand this as web developers that if its going to take 1-4secs for a network request to render, we need to design for these use cases. I.e. when user clicks a button give visual feedback whilst waiting for network.
+                    </aside>
+                </section>
+
+                <section data-state="page--magenta">
+                    <h3 class="rhombus"><div class="rhombus-reset">The waterfall</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">
+                        <figure class="rhombus-reset">
+                            <img class="u-unstyled" src="/img/wpt-waterfall.png" alt="WPT watefall"/>
+                            <figcaption>WebPageTest</figcaption>
+                        </figure>
+                    </div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        The common way to visualise all HTTP requests on a given page is a waterfall.
+                        A vertically linear display of the requests over time.
+                    </aside>
+                </section>
+
+                <section data-state="page--magenta">
+                    <h3 class="rhombus"><div class="rhombus-reset">The waterfall</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">
+                        <figure class="rhombus-reset">
+                            <img class="u-unstyled" src="/img/chrome-waterfall.png" alt="Chrome watefall"/>
+                            <figcaption>Google Chrome - DevTools</figcaption>
+                        </figure>
+                    </div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        The common way to visualise all HTTP requests on a given page is a waterfall.
+                        A vertically linear display of the requests over time.
+                    </aside>
+                </section>
+
+                <section data-state="page--magenta">
+                    <h3 class="rhombus"><div class="rhombus-reset">Timing events</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class="u-unstyled" src="/img/timing-api.png" alt="Timing events"/>
+                        <figcaption>Navigation timing - https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/NavigationTiming/Overview.html</figcaption>
+                    <figure></div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Each page load can be broken down into 12 key events.
+                        Most common tools will visualise 4 of these events.
+                        Start render, DOM content loaded, On Load and document complete.
+                    </aside>
+                </section>
+
+                <section data-state="page-slate--shade-3">
+                    <h2 class="rhombus rhombus--accent"><div class="rhombus-reset">Measuring Network</div></h2>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+                    <aside class="notes">
+                        So lets have a closer look at the tools we can use to measure network.
+                    </aside>
+                </section>
+
+                <section data-state="page--magenta">
+                    <h3 class="rhombus"><div class="rhombus-reset">Web Page Test</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <a href="http://www.webpagetest.org/" target="_blank">
+                            <img class="u-maxed u-unstyled" src="/img/wpt.png" alt="Web Page Test"/>
+                        </a>
+                    <figure></div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        <p>Google backed initiative - Pat Meanan</p>
+                        <p>Started from a Velocity conference discussion</p>
+                        <p>Private instances</p>
+                    </aside>
+                </section>
+
+                <section data-state="page--magenta">
+                    <h3 class="rhombus"><div class="rhombus-reset">DevTools - Network panel</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class="u-maxed u-unstyled" src="/img/network-panel.png" alt="Network panel" />
+                    <figure></div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        In all browser developer tool consoles<br/>
+                        Interactive<br/>
+                        More data<br/>
+                        HAR file exporting<br/>
+                    </aside>
+                </section>
+
+                <section data-state="page--magenta">
+                    <h3 class="rhombus"><div class="rhombus-reset">NavigationTiming API</div></h3>
+                    <pre><code class="javascript"> console.log(window.performance.timing);</code></pre>
+                    <pre><code class="javascript">{
+    connectEnd: 1392551506338
+    connectStart: 1392551505962
+    domComplete: 1392551506889
+    domContentLoadedEventEnd: 1392551506619
+    domContentLoadedEventStart: 1392551506619
+    domInteractive: 1392551506619
+    domLoading: 1392551506601
+    domainLookupEnd: 1392551505962
+    domainLookupStart: 1392551505962
+    fetchStart: 1392551505916
+    loadEventEnd: 1392551506889
+    loadEventStart: 1392551506889
+    navigationStart: 1392551505916
+    redirectEnd: 0
+    redirectStart: 0
+    requestStart: 1392551506338
+    responseEnd: 1392551506592
+    responseStart: 1392551506474
+    secureConnectionStart: 1392551506081
+    unloadEventEnd: 0
+    unloadEventStart: 0
+}
+                        </code></pre>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Native JavaScript Object<br/>
+                        Not suportted in Safari
+                    </aside>
+                </section>
+
+                <section data-state="page--magenta">
+                    <h3 class="rhombus"><div class="rhombus-reset">Google Analytics - Site Speed</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class="u-maxed" src="img/google-analytics.png" alt="Google analytics" />
+                    <figure></div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Google analytics now supports nav timing api.
+                        trend your real user metrics over time to measure your optimisations.
+                    </aside>
+                </section>
+
+                <section data-state="page--magenta">
+                    <h3 class="rhombus"><div class="rhombus-reset">PageSpeed Isights</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">
+                        <figure class="rhombus-reset">
+                            <img class="u-maxed" src="img/page-speed-insights.png" alt="Google page speed insights" />
+                        <figure>
+                    </div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Use PageSpeed Insights to determine what you should start to optimise first.
+                        Gamification!
+                    </aside>
+                </section>
+
+                <section data-state="page-slate--magenta">
+                    <h2 class="rhombus"><div class="rhombus-reset">Optimising network</div></h2>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+                    <aside class="notes">
+                        Now we know how to measure and analyse networking.
+                        What can we do to optimise for it?
+                    </aside>
+                </section>
+
+                <section data-state="page--magenta">
+                    <h3 class="rhombus"><div class="rhombus-reset">Concatenating files (CSS, JS)</div></h3>
+                    <pre><code data-trim class="javascript">
+requirejs: {
+    options: {
+        baseUrl: staticRequireDir + 'javascripts',
+        paths: {
+            bean:         'common/components/bean/bean',
+            bonzo:        'common/components/bonzo/src/bonzo',
+            domReady:     'common/components/domready/ready',
+            EventEmitter: 'common/components/eventEmitter/EventEmitter',
+            qwery:        'common/components/qwery/mobile/qwery-mobile',
+            reqwest:      'common/components/reqwest/src/reqwest',
+            postscribe:   'common/components/postscribe/dist/postscribe',
+            lodash:       'common/components/lodash-amd/modern',
+            imager:       'common/components/imager.js/src/strategies/container',
+            omniture:     'common/components/omniture/omniture',
+            fence:        'common/components/fence/fence',
+            'ophan/ng':   'empty:'
+        },
+        optimize: 'uglify2',
+        preserveLicenseComments: false
+    }
+};
+                    </code></pre>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        All of your jQuery plugins into one<br/>
+                        Ensure you use a cache invalidation strategy.
+                    </aside>
+                </section>
+
+                <section data-state="page--magenta">
+                    <h3 class="rhombus"><div class="rhombus-reset">Optimise & compress images</div></h3>
+
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img style="width: 80%;" src="img/image-optimisation.png" alt="Image optimisation" />
+                    <figure></div>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        60% of all web pages!<br/>
+                        Pick the correct format and compress.
+                    </aside>
+                </section>
+
+                <section data-state="page--magenta">
+                    <h3 class="rhombus"><div class="rhombus-reset">Domain sharding</div></h3>
+
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img style="width: 80%;" src="img/domain-sharding.png" alt="Domain sharding on theguardian.com" />
+                    <figure></div>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        This is a hack, failure of HTTP 1.0<br/>
+                        Worth while if you have 100s of assets
+                    </aside>
+                </section>
+
+                <section data-state="page--magenta">
+                    <h3 class="rhombus"><div class="rhombus-reset">Configure server responses</div></h3>
+                    <ul>
+                        <li>Disable TCP slow start on idle connections</li>
+                        <li>Avoid redirects</li>
+                        <li>Reduce DNS lookups</li>
+                        <li>GZip text based assets (HTML, CSS & JS)</li>
+                        <li>Add expires headers and ETags</li>
+                        <li>Use a CDN (if you can)</li>
+                    </ul>
+                    <br/><br/>
+                    <ul>
+                        <li>SPDY/HTTP 2.0</li>
+                        <li>mod_spdy</li>
+                    </ul>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                </section>
+
+                <section data-state="page-slate--shade-4">
+                    <h2 class="rhombus"><div class="rhombus-reset">Your turn</div></h2>
+                    <h3 class="rhombus"><div class="rhombus-reset"><a href="http://bit.ly/sass-perf-shop" target="_blank">http://bit.ly/sass-perf-shop</a></div></h3>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+                    <aside class="notes">
+                        Now that i've demoed how these tools work, lets all have a play with them.
+
+                        <h2 class="rhombus"><div class="rhombus-reset">Any questions?</div></h2>
+                    </aside>
+                </section>
+
+
+                <!--------------------------------------------------------------------------------
+                 * CRITICAL RENDERING PATH
+                 -------------------------------------------------------------------------------->
+
+                <section data-state="page-slate--shade-1">
+                    <h2 class="rhombus"><div class="rhombus-reset">Critical rendering path</div></h2>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+
+
+                    <aside class="notes">
+                       Now that we have looked at how the browser performs networking lets look at what it does with this information.
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">The browsers rending flow</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class="u-maxed u-unstyled" src="/img/path.png" alt=""/>
+                    <figure></div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">Network</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class="u-maxed u-unstyled" src="/img/path/network.png" alt="Network"/>
+                    <figure></div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                         Average 600ms per network request<br/>
+                         Same breakdown we saw previously
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">Document Object Model (DOM)</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class="u-maxed u-unstyled" src="/img/path/dom.png" alt="Document object model"/>
+                    <figure></div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        DOM is parsed and constructed incrementally, as bytes arrive<br/>
+                        HTML5 first spec to define DOM parsing.
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">CSS Object Model (CSSOM)</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class="u-maxed u-unstyled" src="/img/path/cssom.png" alt="DCSS object model"/>
+                    <figure></div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Although DOM construction is complete can’t render without CSS as would cause a FOUC<br/>
+                        CSS parsing is not incremental, due to its cascading nature. Have to wait for entire file.<br/>
+                        Potentially splitting up your CSS into multiple files may be valid idea. (mobile)
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">JavaScript</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class="u-maxed u-unstyled" src="/img/path/js.png" alt="JavaScript"/>
+                    <figure></div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        <ul>
+                            <li>
+                                Javascript can alter both the DOM and CSSOM
+                                <ul>
+                                    <li>DOM construction cannot proceed until JS is fetched</li>
+                                    <li>DOM construction cannot proceed until JS is executed</li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                JS can query CSSOM
+                                <ul>
+                                    <li>JS can block on CSS</li>
+                                    <li>JS can modify CSSOM</li>
+                                </ul>
+                            </li>
+                            <li>i.e CSS at the top, JS at the bottom. *this is why*</li>
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">Layoput & Paint</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class="u-maxed u-unstyled" src="/img/path/layout.png" alt="Layout and paint"/>
+                    <figure></div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Construct render tree.<br/>
+                        Perform layout, I.e. compute box sizing.
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">The critical rendering path</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class="u-maxed u-unstyled" src="/img/path/complete.png" alt="Critical rendering path" />
+                    <figure></div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Stay off the critical path.
+                        DOM & CSSOM construction are the places where most bottle neck and slow down happen.
+                    </aside>
+                </section>
+
+                <section data-state="page-slate--violet">
+                    <h2 class="rhombus"><div class="rhombus-reset">Optimising the critical rendering path</div></h2>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Analyze and characterize your critical path: number of resources, bytes, length.
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">CSS at the top, JS at the bottom</div></h3>
+                    <pre><code class="html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+    &lt;head&gt;
+        <title>My webpage</title>
+
+        <link rel="stylesheet" href="/core.css" />
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        <h1 class="rhombus rhombus--accent"><div class="rhombus-reset">Super awesome website</div></h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+
+        <script type="text/javascript" src="/jquery.js" async></script>
+    &lt;/body&gt;
+
+ &lt;/html&gt;</code></pre>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Stay off the critical path.
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">Render blocking resources</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">
+                        <figure class="rhombus-reset">
+                            <img class=" u-unstyled" src="/img/render-blocking-path.png" alt="Render blocking path" />
+                            <figcaption>Source: <a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp" target="_blank">Web Fundamentals</a></figcaption>
+                        </figure>
+                    </div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                       Here we can clearly see how both CSS and JS are render blocking resources.
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">CSS Audit</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class=" u-unstyled" src="/img/css-audit.png" alt="Chrome CSS audit" />
+                    <figure></div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        You can use Chrome's audit panel to suggest CSS optimisations for your page.
+
+
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">Inline critical CSS</div></h3>
+                    <pre><code class="html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+    &lt;head&gt;
+        <title>My webpage</title>
+        <style>
+            h1 { color: blue; }
+            p { font-size: 1.6rem; }
+        </style>
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        <h1 class="rhombus rhombus--accent"><div class="rhombus-reset">Super awesome website</div></h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+
+        <link rel="stylesheet" href="/core.css" />
+        <script type="text/javascript" src="/jquery.js" async></script>
+    &lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        So we know how tightly coupled CSS is to rendering.<br/>
+                        Why not inline your critical CSS so the browser has it instatly<br/>
+                        Avoiding any networking
+                        <h3 class="rhombus"><div class="rhombus-reset">Resilience!</div></h3>
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">Async resources</div></h3>
+                    <div class="rhombus rhombus--left rhombus--image">
+                        <figure class="rhombus-reset">
+                            <img class=" u-unstyled" src="/img/non-render-blocking-path.png" alt="Non-render blocking path" />
+                            <figcaption>Source: <a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp" target="_blank">Web Fundamentals</a></figcaption>
+                        </figure>
+                    </div>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        By inling our CSS and declaring the other non-cricital resources as async we can see the affect it has on our path.
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">The pre-loader</div></h3>
+
+                    <div class="rhombus rhombus--left rhombus--image">
+                        <figure class="rhombus-reset">
+                            <img class="u-unstyled u-maxed" src="/img/pre-loader.jpg" alt="Effect of the preloader" />
+                            <figcaption>
+                                Source: Andy Davies <a href="http://www.slideshare.net/AndyDavies/london-web-standards-20140922-pdf">What does the browser pre-loader do?</a>
+                            </figcaption>
+                        <figure>
+                    </div>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Aka the look-ahead or speculative parser. Chrome pre-loader imporves load time by 20%!!
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">Pre-fetching</div></h3>
+                    <pre><code class="html">&lt;!doctype html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+    <title>My webpage</title>
+
+    <link rel="dns-prefetch" href="images.me.com" />
+    <link rel="subresource"  href="/jquery.js" />
+
+    <style>
+        h1 { color: blue; }
+        p { font-size: 1.6rem; }
+    </style>
+&lt;/head&gt;
+
+&lt;body&gt;
+    <h1 class="rhombus rhombus--accent"><div class="rhombus-reset">Super awesome website</div></h1>
+
+    <img src="http://images.me.com/1.jpg" alt="one"/>
+    <img src="http://images.me.com/2.jpg" alt="two"/>
+    <img src="http://images.me.com/3.jpg" alt="three"/>
+    <img src="http://images.me.com/4.jpg" alt="four"/>
+
+
+    <link rel="stylesheet" href="/core.css" />
+    <script type="text/javascript" src="/jquery.js" async></script>
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Give the browser hints as to the priority of your core assets.
+                    </aside>
+                </section>
+
+                <section data-state="page--violet">
+                    <h3 class="rhombus"><div class="rhombus-reset">Pre-rendering</div></h3>
+
+                    <iframe width="640" height="500" src="//www.youtube.com/embed/_Jn93FDx9oI?feature=player_embedded" frameborder="0" allowfullscreen></iframe>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Difference in render time when using pre-render attribute.
+                    </aside>
+                </section>
+
+                <section data-state="page-slate--shade-4">
+                    <h2 class="rhombus"><div class="rhombus-reset">Your turn</div></h2>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                </section>
+
+<!--------------------------------------------------------------------------------
+* LAYOUT AND PAINT
+ -------------------------------------------------------------------------------->
+
+                <section data-state="page-slate--shade-2">
+                    <h2 class="rhombus rhombus--accent"><div class="rhombus-reset">Layout & Paint</div></h2>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+
+                    <aside class="notes">
+                        So i've mentioned a bit about layout and painting on the critical path
+                        What it is this.
+                        How does this effect "in app" / "on page" performance
+                    </aside>
+                </section>
+
+                <section data-state="page--blue">
+                    <h2 class="rhombus"><div class="rhombus-reset">What is layout?</div></h2>
+                    <div class="rhombus rhombus--left rhombus--accent">
+                        <blockquote class="rhombus-reset">"Browser computation of the geometry (position and size) of and element"</blockquote>
+                    </div>
+                    <br/><br/>
+                    <p>I.e:</p>
+                    <ul>
+                        <li>Adding nodes to the DOM</li>
+                        <li>Removing nodes</li>
+                        <li>Updating an nodes style</li>
+                    </ul>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Also know as "Reflow"
+                        Can be extremely expensive
+                        If you resize a parent all child elements need to be recomputed
+                    </aside>
+                </section>
+
+                <section data-state="page--blue">
+                    <h3 class="rhombus"><div class="rhombus-reset">What can trigger layout?</div></h3>
+                    <p>CSS</p>
+                    <ul class="tags">
+                        <li>width</li>
+                        <li>height</li>
+                        <li>padding</li>
+                        <li>margin</li>
+                        <li>display</li>
+                        <li>border-width</li>
+                        <li>border</li>
+                        <li>top</li>
+                        <li>position</li>
+                        <li>font-size</li>
+                        <li>float</li>
+                        <li>text-align</li>
+                        <li>overflow-y</li>
+                        <li>font-weight</li>
+                        <li>overflow</li>
+                        <li>left</li>
+                        <li>font-family</li>
+                        <li>line-height</li>
+                        <li>vertical-align</li>
+                        <li>right</li>
+                        <li>clear</li>
+                        <li>white-space</li>
+                        <li>bottom</li>
+                        <li>min-height</li>
+                    </ul>
+
+                    <p>JavaScript:</p>
+                    <ul class="tags">
+                        <li>clientHeight</li>
+                        <li>clientLeft</li>
+                        <li>clientTop</li>
+                        <li>clientWidth</li>
+                        <li>focus()</li>
+                        <li>getBoundingClientRect()</li>
+                        <li>getClientRects()</li>
+                        <li>innerText</li>
+                        <li>offsetHeight</li>
+                        <li>offsetLeft</li>
+                        <li>offsetParent</li>
+                        <li>offsetTop</li>
+                        <li>offsetWidth</li>
+                        <li>outerText</li>
+                        <li>scrollByLines()</li>
+                        <li>scrollByPages()</li>
+                        <li>scrollHeight</li>
+                        <li>scrollInitView()</li>
+                        <li>scrollIntoViewIfNeeded()</li>
+                        <li>scrollLeft</li>
+                        <li>scrollTop</li>
+                        <li>scrollWidth</li>
+                    </ul>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Changing any of these values with cause the browser to reflow.
+                    </aside>
+                </section>
+
+                <section data-state="page--blue">
+                    <h2 class="rhombus"><div class="rhombus-reset">CSS Triggers</div></h2>
+
+                    <div class="rhombus rhombus--left rhombus--image">
+                        <figure class="rhombus-reset">
+                            <img class="u-unstyled" src="/img/css-triggers.png" alt="csstriggers.com" style="height:400px;" />
+                            <figcaption>Source – <a href="http://csstriggers.com/" target="_blank">http://csstriggers.com/</a></figcaption>
+                        </figure>
+                    </div>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Great resource from Paul Lewis. css-triggers.com
+                    </aside>
+                </section>
+
+                <section data-state="page-slate--blue">
+                    <h1 class="rhombus rhombus--accent"><div class="rhombus-reset">The 60fps Holy Grail</div></h1>
+
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Refresh rate of most screens<br/>
+                        Going lower than 15fps will cause users to see frames, i.e. jank!
+                    </aside>
+                </section>
+
+                <section data-state="page--blue">
+                    <h2 class="rhombus"><div class="rhombus-reset">Average refresh rate</div></h2>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Device</th>
+                                <th>Low-end</th>
+                                <th>Average</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table__row--1">
+                                <td class="table__cell--bold">Mobile</td>
+                                <td>55Hz</td>
+                                <td>60Hz</td>
+                            </tr>
+                            <tr class="table__row--2">
+                                <td class="table__cell--bold">Laptop</td>
+                                <td>58Hz</td>
+                                <td>60Hz</td>
+                            </tr>
+                            <tr class="table__row--3">
+                                <td class="table__cell--bold">Monitor</td>
+                                <td>50Hz</td>
+                                <td>60Hz</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Refresh rate of most screens
+                        going lowing than 15fps will cause users to see frames, i.e. jank!
+                    </aside>
+                </section>
+
+                <section data-state="page-slate--blue">
+                    <h1 class="rhombus rhombus--accent"><div class="rhombus-reset">16.7ms</div></h1>
+
+                    <h4>1000ms/60fps = 16.7ms</h4>
+
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Refresh rate of most screens
+                        going lowing than 15fps will cause users to see frames, i.e. jank!
+                    </aside>
+                </section>
+
+                <section data-state="page-slate--shade-1">
+                    <h1 class="rhombus rhombus--accent"><div class="rhombus-reset">Measuring layout & paint</div></h1>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        So lets see what tools we have to measure layout and paint.
+                    </aside>
+                </section>
+
+                <section data-state="page--blue">
+                    <h2 class="rhombus"><div class="rhombus-reset">Timeline</div></h2>
+
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class=" u-unstyled" src="/img/dev-tools-timline.png" alt="Dev tools timeline" />
+                    <figure></div>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        How long did an individual frame take?<br/>
+                        How long did an individual recalculation take?<br/>
+                        Which JS function initiated this relcalc?<br/>
+                    </aside>
+                </section>
+
+                <section data-state="page--blue">
+                    <h2 class="rhombus"><div class="rhombus-reset">Paint rectangles</div></h2>
+
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class=" u-unstyled" src="/img/paint-rectangles.png" alt="Dev tools show paint rectangles" />
+                    <figure></div>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Explain how painting is divided into render titles<br/>
+                        Explain how GPU titles work.
+                    </aside>
+                </section>
+
+                <section data-state="page--blue">
+                    <h2 class="rhombus"><div class="rhombus-reset">Continuous paint mode</div></h2>
+
+                    <div class="rhombus rhombus--left rhombus--image">                         <figure class="rhombus-reset">
+                        <img class=" u-unstyled" src="/img/continous-paint-mode.png" alt="Continous paint mode" />
+                    <figure></div>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Continuously re-paints the page<br/>
+                        Paint rate time in ms<br/>
+                        Great for spotting hidden reflows that you didn't know about.
+                    </aside>
+                </section>
+
+                <section data-state="page--blue">
+                    <h3 class="rhombus"><div class="rhombus-reset">JavaScript timing and profiling</div></h3>
+
+                    <p>timeStamp</p>
+                    <pre><code data-trim class="javascript">
+function animateMenu() {
+    console.timeStamp('Animate menu');
+    var offSet = $('.menu').offsetTop();
+    $('.menu').offsetTop(offset + 20);
+}
+                    </code></pre>
+
+                    <p>time</p>
+                    <pre><code data-trim class="javascript">    function expensiveFunction() {
+    console.time(‘Expensive exec’);
+    //Do really expensive stuff
+    console.timeEnd(‘Expensive exec’);
+}
+                    </code></pre>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Logs event label into the timeline
+                    </aside>
+                </section>
+
+                <section data-state="page-slate--shade-1">
+                    <h1 class="rhombus rhombus--accent"><div class="rhombus-reset">optimising layout & paint</div></h1>
+
+
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        So how can we optimise for paint
+                    </aside>
+                </section>
+
+                <section data-state="page--blue">
+                    <h2 class="rhombus"><div class="rhombus-reset">Throttle and debounce all the things</div></h2>
+
+                    <pre><code data-trim class="javascript">
+function debounce(fn, delay) {
+    var timer = null;
+    return function () {
+        var context = this, args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            fn.apply(context, args);
+        }, delay);
+    };
+}
+                    </code></pre>
+
+                    <pre><code data-trim class="javascript">
+$('window').on('scroll', debounce(function (event) {
+    console.log('tick');
+}, 1000));
+                    </code></pre>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Debounce waits for the end of the event chain<br/>
+                        Throttle limits to every n milliseconds
+                    </aside>
+                </section>
+
+                <section data-state="page--blue">
+                    <h2 class="rhombus"><div class="rhombus-reset">Debounce example</div></h2>
+
+                    <div class="rhombus rhombus--left rhombus--image">
+                        <figure class="rhombus-reset">
+                            <img class=" u-unstyled" src="/img/debounce-example.png" alt="Debounce example" />
+                        </figure>
+                    </div>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Real-life example why debouncing is important.
+                    </aside>
+                </section>
+
+                <section data-state="page--blue">
+                    <h3 class="rhombus"><div class="rhombus-reset">requestAnimationFrame</div></h3>
+
+                    <pre><code data-trim class="javascript">
+var circles = $('.circles');
+
+function move(timestamp) {
+    circles.forEach(function(el) {
+        el.style.left = Math.min(progress/10, 200) + "px";
+    });
+}
+
+$('window').on('scroll', function() {
+    requestAnimationFrame(move);
+});
+                    </code></pre>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        The browser can schedule it at the most appropriate time and, if we play our cards right,
+                        it will help us get a buttery smooth 60 frames per second.
+                    </aside>
+                </section>
+
+                <section data-state="page--blue">
+                    <h3 class="rhombus"><div class="rhombus-reset">GPU composited layers</div></h3>
+
+                    <pre><code data-trim class="css">
+.feedback {
+    position: absolute;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    transform: translatez(0);
+}
+                    </code></pre>
+                        <footer>
+                            <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                            <span class="u-right">#perfshop</span>
+                        </footer>
+                        <aside class="notes">
+                            transform: translateZ(0);<br/>
+                            Use with care. Can drain GPU on mobile devices, and in fact be negative effect.
+                        </aside>
+                </section>
+
+                <section data-state="page--blue">
+                    <h3 class="rhombus"><div class="rhombus-reset">avoid expensive styles</div></h3>
+
+                    <ul class="tags">
+                        <li>border-radius</li>
+                        <li>transform</li>
+                        <li>linear-gradient</li>
+                        <li>box-shadow</li>
+                    </ul>
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+                    <aside class="notes">
+                        Flat design FTW!
+                    </aside>
+                </section>
+
+                <section data-state="page-slate--shade-1">
+                    <h2 class="rhombus rhombus--accent"><div class="rhombus-reset">your turn</div></h2>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+
+                    <aside class="notes">
+                        Lets have a play with these tools and try and optimise a site.
+                    </aside>
+                </section>
+
+                <section data-state="page-slate--shade-1">
+                    <h2 class="rhombus rhombus--accent"><div class="rhombus-reset">Putting it all together</div></h2>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+
+                    <aside class="notes">
+                        Lets have a play with these tools and try and optimise a site.
+                    </aside>
+                </section>
+
+
+ <!--------------------------------------------------------------------------------
+ * SUMMARY
+ -------------------------------------------------------------------------------->
+
+                <section data-state="page-slate--shade-4">
+                    <h2 class="rhombus rhombus--accent"><div class="rhombus-reset">Summary</div></h2>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+
+                    <aside class="notes">
+                      Lets just re-cap what we have covered this evening.
+                    </aside>
+                </section>
+
+                <section data-state="page-slate--cyan">
+                    <h1 class="rhombus rhombus--accent"><div class="rhombus-reset">Don’t guess it, test it.</div></h1>
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+
+                    <aside class="notes">
+                        It's not one size fits all.
+                    </aside>
+                </section>
+
+
+                <section>
+                    <h1 class="rhombus rhombus--accent"><div class="rhombus-reset">Thank you.</div></h1>
+                    <h3 class="light">Any questions or feedback?</h3>
+                    <p>
+                        By <a href="http://twitter.com/patrickhamann">Patrick Hamann</a> & <a href="http://www.sassconf.com/">SassConf</a>
+                    </p>
+
+
+                    <footer>
+                        <a class="u-left" href="http://twitter.com/patrickhamann">@patrickhamann</a>
+                        <span class="u-right">#perfshop</span>
+                    </footer>
+
+                </section>
+
+
+            </div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: false,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'none', // default/cube/page/concave/zoom/linear/fade/none
+                // Transition speed
+                transitionSpeed: 'default', // default/fast/slow
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

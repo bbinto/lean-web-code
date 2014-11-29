@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>2.3 Pre-fetching</title>
+    <link rel="stylesheet" href="../../_lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="../../_lib/css/tasks.css" />
+</head>
+<body data-spy="scroll" data-target=".sidebar-nav">
+
+<div class="container">
+
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../start.html">
+                    <img class="nav-logo" src="../../_lib/img/logo.png" alt="SassConf"/>
+                    Building a faster web
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="../start.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">1. Network <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="../1_Network/1_1.html">1.1 WebPageTest</a></li>
+                        <li><a href="../1_Network/1_2.html">1.2 DevTools</a></li>
+                        <li><a href="../1_Network/1_3.html">1.3 NavigationTiming API</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">2. Critical Path <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="2_1.html">2.1 Audit</a></li>
+                        <li><a href="2_2.html">2.2 Above the fold</a></li>
+                        <li class="active"><a href="2_3.html">2.3 Pre-fetch</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Layout and Paint <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="../3_Layout_and_Paint/3_1.html">3.1 Timeline</a></li>
+                        <li><a href="../3_Layout_and_Paint/3_2.html">3.2 Paint rectangles</a></li>
+                        <li><a href="../3_Layout_and_Paint/3_3.html">3.3 Continuous paint</a></li>
+                    </ul>
+                </li>
+                <li><a href="../4_Putting_it_All_Together/4_1.html">Putting it all together</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="../building-a-faster-web.zip">Download</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="sidebar affix panel panel-default">
+                <div class="panel-heading">Pre-fetching</div>
+                <div class="panel-body sidebar-nav">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="#one">DNS</a></li>
+                        <li><a href="#two">Subresource</a></li>
+                        <li><a href="#three">Pre-render</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9" role="main">
+            <div class="page-header">
+                <h1>2.3 Pre-fetching</h1>
+                <p class="lead">Prioritising resource loading on the page.</p>
+            </div>
+
+            <p>Pre-fetching is a way of hinting to the browser about resources that are definitely going to or might be
+                used in the future, some hints apply to the current page, others to possible future pages.</p>
+
+            <p>As developers we know our applications better than the browser does, we can use this information to
+            inform the browser about core resources.</p>
+
+            <section id="one">
+                <h2>2.3.1 DNS Pre-fetching</h2>
+                <hr/>
+                <p>At the simplest level we can tell the browser to resolve the DNS for another hostname that we know will
+                    access later on the page:</p>
+
+                <pre><code>&lt;link rel="dns-prefetch" href="my.otherhostname.co.uk"&gt;</code></pre>
+
+                <p>Using the connections view in this WebPageTest result try and find the effect on pre-fetching DNS.</p>
+                <a href="http://www.webpagetest.org/result/140212_ND_D22/1/details/" target="_blank">http://www.webpagetest.org/result/140212_ND_D22/1/details/</a>
+
+
+            </section>
+
+            <section id="two">
+                <h2>2.3.2 Sub-resource</h2>
+                <hr/>
+                <p>Some browsers such as Chrome and Opera also allow us to hint that we are going to use another resource later in the current page and
+                    so it should be downloaded as a high priority.</p>
+
+                <p>This is very useful for instance in JavaScript applications to download data resources e.t.c.</p>
+
+                <pre><code>&lt;link rel="subresource"  href="http://www.me.com/my-data.json" /&gt;</code></pre>
+
+                <p>Add this to the example page provided and view the effect it has on the network waterfall.</p>
+
+            </section>
+
+            <section id="three">
+                <h2>2.3.2 Pre-render</h2>
+                <hr/>
+                <p>What if we could tell the browser to pre-render entire pages in the background, allowing for instant switching when
+                a users follows the link to the page.</p>
+
+                <p>The pre-render hint allows us to do this.</p>
+
+                <pre><code>&lt;link rel="prerender"  href="/thenextpage.html" /&gt;</code></pre>
+
+                <p>This can be extremely useful if you know the user is going on to the next page. For instance
+                in an image gallery, or checkout flow.</p>
+
+                <div class="bs-callout bs-callout-warning">
+                    <h4>Warning:</h4>
+                    <p>With great power, comes great responsibility. This attribute should not be abused, as you are essentially
+                    forcing the browser to download hundreds of resources. Only use if you are very certain the user will go
+                    to this resource next.</p>
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+    <div class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <li><a href="http://twitter.com/patrickhamann">@patrickhamann</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right hashtag">
+            <li><a href="https://twitter.com/search?q=%23perfshop&src=typd">#perfshop</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../../_lib/bootstrap/js/jquery-1.10.1.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../../_lib/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>

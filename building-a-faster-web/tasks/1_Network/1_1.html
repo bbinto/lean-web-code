@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>1.1 WebPageTest.org</title>
+        <link rel="stylesheet" href="../../_lib/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" href="../../_lib/css/tasks.css" />
+    </head>
+    <body data-spy="scroll" data-target=".sidebar-nav">
+
+    <div class="container">
+
+        <div class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="../start.html">
+                        <img class="nav-logo" src="../../_lib/img/logo.png" alt="SassConf"/>
+                        Building a faster web
+                    </a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="../start.html">Home</a></li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">1. Network <b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="active"><a href="#">1.1 WebPageTest</a></li>
+                            <li><a href="1_2.html">1.2 DevTools</a></li>
+                            <li><a href="1_3.html">1.3 NavigationTiming API</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">2. Critical Path <b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="../2_Critical_Path/2_1.html">2.1 Audit</a></li>
+                            <li><a href="../2_Critical_Path/2_2.html">2.2 Above the fold</a></li>
+                            <li><a href="../2_Critical_Path/2_3.html">2.3 Pre-fetch</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Layout and Paint <b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="../3_Layout_and_Paint/3_1.html">3.1 Timeline</a></li>
+                            <li><a href="../3_Layout_and_Paint/3_2.html">3.2 Paint rectangles</a></li>
+                            <li><a href="../3_Layout_and_Paint/3_3.html">3.3 Continuous paint</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="../4_Putting_it_All_Together/4_1.html">Putting it all together</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="../building-a-faster-web.zip">Download</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-3">
+
+                <div class="sidebar affix panel panel-default">
+                    <div class="panel-heading">WebPageTest</div>
+                    <div class="panel-body sidebar-nav">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="#one">Mobile emulation</a></li>
+                            <li><a href="#two">Waterfall view</a></li>
+                            <li><a href="#three">Filmstrip view</a></li>
+                            <li><a href="#four">SPOF</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9" role="main">
+                <div class="page-header">
+                    <h1>1.1 WebPageTest.org</h1>
+                    <p class="lead">Online tool for synthetic performance testing.</p>
+                </div>
+
+                <p>This tool allows you to run free website speed tests from multiple locations around the globe using real browsers
+                    (IE and Chrome) and at real consumer connection speeds. You can run simple tests or perform
+                    advanced testing including multi-step transactions, video capture, content blocking and much more.
+                    Your results will provide rich diagnostic information including resource loading waterfall charts,
+                    Page Speed optimization checks and suggestions for improvements.</p>
+
+                <section id="one">
+                    <h2>1.1.1 Mobile emulation mode</h2>
+                    <hr/>
+                    <p>When setting up a test to run you can use the advanced settings to emulate a mobile browser.</p>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <img src="img/mobile-emulation.jpg" alt="Mobile emulation"/>
+                        </div>
+                    </div>
+                    <p>This is will spoof the user-agent string reported to the website to be Chrome for mobile.</p>
+                    <p>It also changes the viewport and screen dimensions of the captured output.</p>
+                    <div class="bs-callout bs-callout-info">
+                        <h4>Tip:</h4>
+                        <p>This can be very useful if you serve a separate mobile website based on the accessing device or browser.
+                        Such as redirecting to a m.dot subdomain.</p>
+                    </div>
+                </section>
+
+                <section id="two">
+                    <h2>1.1.2 Waterfall view</h2>
+                    <hr/>
+                    <p>Once you have ran a test you will be presented with the summary and details views. Click on the details view to
+                    view the waterfall chart from the test.</p>
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <img src="img/waterfall-view.png" alt="Waterfall view"/>
+                        </div>
+                    </div>
+
+                    <p>Use the waterfall view from <a href="http://www.webpagetest.org/result/140215_SC_M1G/1/details/">this test</a>
+                        to answer the questions below:</p>
+                    <ul>
+                        <li>How many kilobytes in size was the initial html file?</li>
+                        <li>What time was the start render event fired?</li>
+                        <li>How many open socket connections were there to the host news.bbcimg.co.uk?</li>
+                        <li>How many 301 redirections where there on the page?</li>
+                        <li>When did the socket connection chartbeat.js occur and why?</li>
+                    </ul>
+
+                </section>
+
+                <section id="three">
+                    <h2>1.1.3 Filmstrip view</h2>
+                    <hr/>
+                    <p>Whilst WebPageTest is recording your test results it captures screenshots of the browser screen
+                    at every frame. This data can then be presented as a filmstrip view for you to play back.</p>
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <img src="img/filmstrip.png" alt="Filmstrip"/>
+                        </div>
+                    </div>
+
+                    <p>Generate your own test or use the filmstrip view from <a href="">this test</a> to complete the tasks below:</p>
+
+                    <ul>
+                        <li>At which frame was the brand logo painted to the screen.</li>
+                        <li>Export the filmstrip as a video to playback later.</li>
+                        <li>Use the horizontal scroll bar to see the correlation between the network waterfall and the painting
+                            to the screen. Note what happens when the last CSS file is downloaded.</li>
+                    </ul>
+
+                    <div class="bs-callout bs-callout-info">
+                        <h4>Tip:</h4>
+                        <p>Exporting and saving the output video and image files on from the timeline can be very good to compare
+                        your website pre and post optimisations. Whilst also being a great resource to send to colleagues.</p>
+                    </div>
+
+                 </section>
+
+                <section id="four">
+                    <h2>1.1.4 SPOF <span class="label label-info">Advanced</span></h2>
+                    <hr/>
+                    <p>A SPOF or "Single Point of Failure" is a when a core resource to your webpage fails to load.
+                    This can either prevent the page from rendering or make it entirely useless once rendered.</p>
+
+                    <p>Due to the nature of the internet, networking often fails, even on domains that you have control of.
+                    The most common form of SPOF are from websites relying to heavily on 3rd party resources,
+                        this should be avoided at all costs.</p>
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <img src="img/filmstrip.png" alt="Filmstrip"/>
+                        </div>
+                    </div>
+
+                    <p>Using the SPOF tool on webpagetest.org. Try and create a SPOF to block the rendering of
+                        http://www.twitter.com</p>
+
+                    <div class="bs-callout bs-callout-warning">
+                        <h4>Warning:</h4>
+                        <p>It is a very common and good practice to load 3rd-[arty resources such as jQuery from external domains.
+                        Though doing so creates a tightly coupled reliance on that resource to always be available for your
+                            website to function. Always ensure you defend against the file not loading and prevent any SPOFs</p>
+                    </div>
+
+                </section>
+            </div>
+
+        </div>
+
+        <div class="navbar navbar-default">
+            <ul class="nav navbar-nav">
+                <li><a href="http://twitter.com/patrickhamann">@patrickhamann</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right hashtag">
+                <li><a href="https://twitter.com/search?q=%23perfshop&src=typd">#perfshop</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../../_lib/bootstrap/js/jquery-1.10.1.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../../_lib/bootstrap/js/bootstrap.min.js"></script>
+
+    </body>
+</html>

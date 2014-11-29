@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>2.1 Auditing</title>
+    <link rel="stylesheet" href="../../_lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="../../_lib/css/tasks.css" />
+</head>
+<body data-spy="scroll" data-target=".sidebar-nav">
+
+<div class="container">
+
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../start.html">
+                    <img class="nav-logo" src="../../_lib/img/logo.png" alt="SassConf"/>
+                    Building a faster web
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="../start.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">1. Network <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="../1_Network/1_1.html">1.1 WebPageTest</a></li>
+                        <li><a href="../1_Network/1_2.html">1.2 DevTools</a></li>
+                        <li><a href="../1_Network/1_3.html">1.3 NavigationTiming API</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">2. Critical Path <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="active"><a href="2_1.html">2.1 Audit</a></li>
+                        <li><a href="2_2.html">2.2 Above the fold</a></li>
+                        <li><a href="2_3.html">2.3 Pre-fetch</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Layout and Paint <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="../3_Layout_and_Paint/3_1.html">3.1 Timeline</a></li>
+                        <li><a href="../3_Layout_and_Paint/3_2.html">3.2 Paint rectangles</a></li>
+                        <li><a href="../3_Layout_and_Paint/3_3.html">3.3 Continuous paint</a></li>
+                    </ul>
+                </li>
+                <li><a href="../4_Putting_it_All_Together/4_1.html">Putting it all together</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="../building-a-faster-web.zip">Download</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="sidebar affix panel panel-default">
+                <div class="panel-heading">Auditing</div>
+                <div class="panel-body sidebar-nav">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="#one">Audit panel</a></li>
+                        <li><a href="#two">PageSpeed Insights</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9" role="main">
+            <div class="page-header">
+                <h1>2.1 Auditing</h1>
+                <p class="lead">Auditing your critical rendering path</p>
+            </div>
+
+            <section id="one">
+                <h2>2.1.1 Chrome audit panel</h2>
+                <hr/>
+                <p>As we saw in the networking exercises, the Chrome developer tools give us a powerful auditing profile.</p>
+                <p>The <kbd>Web Page Performance</kbd> audit analyses your critical rendering path, and gives you best practice
+                suggestions on how to optimise your load performance. More specifically ensuring CSS is the only resource on
+                    your path.</p>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img src="img/audit-panel.jpg" alt="Audit panel" />
+                    </div>
+                </div>
+
+                <p>Run the audit on a couple of pages to see the suggestions it gives you.</p>
+
+                <img src="img/audit-suggestions.png" alt="Audit suggestions" />
+
+            </section>
+
+            <section id="two">
+                <h2>2.1.2 PageSpeed Insights</h2>
+                <hr/>
+                <p>As well as the auditing inside Chrome developer tools, Google also provides an online service Insights
+                that performs a more in-depth analysis on your website. It is also extremely good at offering advice to optimise
+                    your critical rending path.</p>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img src="img/insights-url.png" alt="Insights URL bar" />
+                    </div>
+                </div>
+
+                <p>Once you have ran the test, view the information provided in the section titled "Speed".
+                It should details the blocking resources which are preventing fast rendering of your above-the-fold
+                    content.</p>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img src="img/insights-information.png" alt="Insights speed information" />
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+    <div class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <li><a href="http://twitter.com/patrickhamann">@patrickhamann</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right hashtag">
+            <li><a href="https://twitter.com/search?q=%23perfshop&src=typd">#perfshop</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../../_lib/bootstrap/js/jquery-1.10.1.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../../_lib/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>

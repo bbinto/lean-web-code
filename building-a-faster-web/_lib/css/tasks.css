@@ -1,0 +1,85 @@
+.logo {
+    width: 100px;
+    height: 100px;
+    margin-top: -10px;
+    margin-right: 20px;
+    float: left;
+}
+
+a {
+    color: #640D32;
+}
+
+a:hover,
+a:focus,
+a:active {
+    color: #AC235E;
+}
+
+.nav-logo {
+    float: left;
+    margin-left: -10px;
+    margin-top: -10px;
+    margin-right: 10px;
+    height: 140%;
+}
+
+.nav-pills > li > a:hover,
+.nav-pills > li > a:focus {
+    background-color:#AC235E;
+    color: #ffffff;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+    background-color: #640D32;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.sidebar {
+    margin-top: 40px;
+}
+
+section {
+    margin-bottom: 60px;
+}
+
+.panel img {
+    width: 100%;
+}
+
+.bs-callout {
+    margin: 20px 0;
+    padding: 20px;
+    border-left: 3px solid #eee;
+}
+
+.exercises > li {
+    margin-bottom: 20px;
+}
+
+.hashtag {
+    margin-right: 0 !important;
+}
+
+.bs-callout-warning {
+    background-color: #fcf8f2;
+    border-color: #f0ad4e;
+}
+
+.bs-callout-warning h4 {
+    color: #f0ad4e;
+}
+
+.bs-callout-info {
+    background-color: #f4f8fa;
+    border-color: #5bc0de;
+}
+
+.bs-callout-info h4 {
+    color: #5bc0de;
+}

@@ -1,0 +1,27 @@
+.cat {
+    position: relative;
+    box-shadow: 3px 3px 5px 3px #eee;
+    transition: all 0.3s ease-out;
+}
+
+.cat:hover {
+    border-radius: 8px;
+    background: #FFF;
+    border: 1px solid #BBB;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+    transform: translate(0, -4px);
+}
+
+.cat__actions .btn-success {
+    background: #b4ddb4;
+    background: linear-gradient(to bottom,  #b4ddb4 0%,#83c783 17%,#52b152 33%,#008a00 67%,#005700 83%,#002400 100%);
+}
+
+.cat__actions .btn-danger {
+    background: #a90329;
+    background: linear-gradient(to bottom,  #a90329 0%,#8f0222 44%,#6d0019 100%);
+}
+
+#navbar {
+    box-shadow: 0 8px 6px -6px black;
+}

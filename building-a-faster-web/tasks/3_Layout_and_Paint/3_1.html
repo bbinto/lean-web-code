@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>3.1 Timeline</title>
+    <link rel="stylesheet" href="../../_lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="../../_lib/css/tasks.css" />
+</head>
+<body data-spy="scroll" data-target=".sidebar-nav">
+
+<div class="container">
+
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../start.html">
+                    <img class="nav-logo" src="../../_lib/img/logo.png" alt="SassConf"/>
+                    Building a faster web
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="../start.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">1. Network <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="../1_Network/1_1.html">1.1 WebPageTest</a></li>
+                        <li><a href="../1_Network/1_2.html">1.2 DevTools</a></li>
+                        <li><a href="../1_Network/1_3.html">1.3 NavigationTiming API</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">2. Critical Path <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="../2_Critical_Path/2_1.html">2.1 Audit</a></li>
+                        <li><a href="../2_Critical_Path/2_2.html">2.2 Above the fold</a></li>
+                        <li><a href="../2_Critical_Path/2_3.html">2.3 Pre-fetch</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Layout and Paint <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="active"><a href="3_1.html">3.1 Timeline</a></li>
+                        <li><a href="3_2.html">3.2 Paint rectangles</a></li>
+                        <li><a href="3_3.html">3.3 Continuous paint</a></li>
+                    </ul>
+                </li>
+                <li><a href="../4_Putting_it_All_Together/4_1.html">Putting it all together</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="../building-a-faster-web.zip">Download</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="sidebar affix panel panel-default">
+                <div class="panel-heading">Timeline</div>
+                <div class="panel-body sidebar-nav">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="#one">Analyse</a></li>
+                        <li><a href="#two">Timestamp</a></li>
+                        <li><a href="#three">Refactor</a></li>
+                        <li><a href="#four">requestAnimationFrame</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9" role="main">
+            <div class="page-header">
+                <h1>3.1 Timeline</h1>
+                <p class="lead">DevTools timeline panel</p>
+            </div>
+
+            <section id="one">
+                <h2>3.1.1 Analyse</h2>
+                <hr/>
+                <p>The devtools Timeline panel lets you record and analyse the frame-by-frame activity on your page during runtime.
+                    It's the best place to start investigating perceived performance issues, especially those related
+                    to JavaScript and paint.</p>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img src="img/timeline.png" alt="Timeline panel" />
+                    </div>
+                </div>
+
+                <p>We will use the Timeline panel to debug some paint issues in the example site page contained in this folder.</p>
+
+                <ul>
+                    <li>Open the example-site/index.html page in your browser</li>
+                    <li>Open up the browsers JS console <kbd>alt</kbd> + <kbd>ctrl</kbd> + <kbd>j</kbd></li>
+                    <li>Open the Timeline panel and go the Frames view.</li>
+                    <li>Click the Record button in the Timeline.</li>
+                    <li>After after a second or two (10-12 frames recorded) stop the recording</li>
+                </ul>
+
+                <p>Now you have enough data to analyse and dive deep into each frame to determine what could be the issue.</p>
+
+                <div class="bs-callout bs-callout-info">
+                    <h4>Hint:</h4>
+                    <p>Try and use the "records" panel to determine which JavaScript file may be triggering the problems.</p>
+                    <p>Look for warning symbols which may suggest forced layout.</p>
+                </div>
+
+            </section>
+
+            <section id="two">
+                <h2>3.1.2 TimeStamp</h2>
+                <hr/>
+                <p>You can quite easily lose track of all of the records being output to the Timeline, especially
+                    if you have multiple JavaScripts running on the page in parallel.</p>
+
+                <p>Once you have located an issue with a specific bit of JavaScript you can use the consoles built in
+                timestamping method to place a marker in the Timeline for quick reference.</p>
+
+                <p>Try adding <code>console.timeStamp('My marker');</code> to your JavaScript function and re-record the timeline.</code></p>
+
+            </section>
+
+            <section id="three">
+                <h2>3.1.3 Refactor</h2>
+                <hr/>
+                <p>Now that we have isolated the JavaScript function that is causing the forced layout we can try to refactor it
+                to prevent forced layout.</p>
+
+                <p>Remember accessing an elements geometry forces the browser to reflow and marks it as dirty.</p>
+
+                <div class="bs-callout bs-callout-info">
+                    <h4>Tip:</h4>
+                    <p>Why not try throttling or debouncing the function bound to the scroll event.</p>
+                </div>
+
+            </section>
+
+            <section id="four">
+                <h2>3.1.4 requestAnimationFrame <span class="label label-info">Advanced</span></h2>
+                <hr/>
+                <p>Although we have refactored the bound function to the scroll event to have a jank<sup>TM</sup> free animation.
+                We could go one step further and allow the browser to dictate when the animation happens</p>
+
+                <p>Try changing the scroll handler to use <code>window.requestAnimationFrame</code>. Good documentation can be found here:
+                    <a href="https://developer.mozilla.org/en/docs/Web/API/window.requestAnimationFrame" target="_blank">https://developer.mozilla.org/en/docs/Web/API/window.requestAnimationFrame</a>
+                </p>
+
+
+            </section>
+
+        </div>
+
+    </div>
+
+    <div class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <li><a href="http://twitter.com/patrickhamann">@patrickhamann</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right hashtag">
+            <li><a href="https://twitter.com/search?q=%23perfshop&src=typd">#perfshop</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../../_lib/bootstrap/js/jquery-1.10.1.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../../_lib/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>

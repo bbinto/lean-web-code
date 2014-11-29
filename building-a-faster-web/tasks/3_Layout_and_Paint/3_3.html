@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>3.3 Continuous paint</title>
+    <link rel="stylesheet" href="../../_lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="../../_lib/css/tasks.css" />
+</head>
+<body data-spy="scroll" data-target=".sidebar-nav">
+
+<div class="container">
+
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../start.html">
+                    <img class="nav-logo" src="../../_lib/img/logo.png" alt="SassConf"/>
+                    Building a faster web
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="../start.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">1. Network <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="../1_Network/1_1.html">1.1 WebPageTest</a></li>
+                        <li><a href="../1_Network/1_2.html">1.2 DevTools</a></li>
+                        <li><a href="../1_Network/1_3.html">1.3 NavigationTiming API</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">2. Critical Path <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="../2_Critical_Path/2_1.html">2.1 Audit</a></li>
+                        <li><a href="../2_Critical_Path/2_2.html">2.2 Above the fold</a></li>
+                        <li><a href="../2_Critical_Path/2_3.html">2.3 Pre-fetch</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Layout and Paint <b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="3_1.html">3.1 Timeline</a></li>
+                        <li><a href="3_2.html">3.2 Paint rectangles</a></li>
+                        <li class="active"><a href="3_3.html">3.3 Continuous paint</a></li>
+                    </ul>
+                </li>
+                <li><a href="../4_Putting_it_All_Together/4_1.html">Putting it all together</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="../building-a-faster-web.zip">Download</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="sidebar affix panel panel-default">
+                <div class="panel-heading">Timeline</div>
+                <div class="panel-body sidebar-nav">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="#one">Continuous paint</a></li>
+                        <li><a href="#two">Refactor</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9" role="main">
+            <div class="page-header">
+                <h1>3.3 Continuous paint</h1>
+                <p class="lead">DevTools continuous paint mode</p>
+            </div>
+
+            <section id="one">
+                <h2>3.3.1 Continuous paint mode.</h2>
+                <hr/>
+                <p>Continuous painting mode is a tool that helps you identify which elements are costly on the page. It
+                    puts the page into an always repainting state, showing a counter of how much painting work is happening.
+                    Then, you can hide elements and change styles, watching the counter, in order to figure out which styles
+                    are effecting paint.</p>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img src="img/continuous-paint.png" alt="Continuous paint mode" />
+                    </div>
+                </div>
+
+                <ul>
+                    <li>Open the example-site/index.html page in your browser</li>
+                    <li>Open up the browsers JS console <kbd>alt</kbd> + <kbd>ctrl</kbd> + <kbd>j</kbd></li>
+                    <li>Open the drawer panel and go the Rendering tab.</li>
+                    <li>Check the "Enable continuous page repainting" option</li>
+                    <li>Scroll around the page to see the painting behaviour.</li>
+                </ul>
+
+                <p>Now you can use the syles panel to turn off style properties on certain elements within the pagr
+                to see their effects.</p>
+
+                <div class="bs-callout bs-callout-info">
+                    <h4>Hint:</h4>
+                    <p>Remember certain CSS properties are more expensive than others. For instance <code>border-radius</code></p>
+                </div>
+
+
+            </section>
+
+            <section id="two">
+                <h2>3.3.2 Refactor</h2>
+                <hr/>
+                <p>Now that you have isolated the CSS styles which are causing long paints. Make the changes permanent by
+                editing the <code>style.css</code> file and reload the page to see your changes take effect.</p>
+
+            </section>
+
+        </div>
+
+    </div>
+
+    <div class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <li><a href="http://twitter.com/patrickhamann">@patrickhamann</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right hashtag">
+            <li><a href="https://twitter.com/search?q=%23perfshop&src=typd">#perfshop</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../../_lib/bootstrap/js/jquery-1.10.1.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../../_lib/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>
