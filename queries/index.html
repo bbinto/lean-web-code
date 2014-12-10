@@ -30,6 +30,17 @@ SELECT mimeType, ct * 100 AS percent FROM (
   ORDER BY ct DESC
 ) </pre>
        
+<h2>HTTP Archive </h2>
+<h3>How many JSON files are not gzipped?</h3>
+<pre>
+    select distinct(url),resp_content_encoding, mimeType from requests
+    where mimeType like '%json%' and resp_content_encoding is NULL
+    and url like 'http://www.cbc.ca%'
+</pre>
+
+
+<h3>How many sites use duplicate scripts?</h3>
+
 
     </section>
     </div>
