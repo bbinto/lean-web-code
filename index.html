@@ -20,9 +20,9 @@ var myReq = new XMLHttpRequest();
 myReq.open('GET', "stylesheets/styles.css", true);
 myReq.onload = function(e) {
   performance.mark('mark_end_xhr');
-  //reqCnt++;
-  console.log(performance.measure('measure_xhr_', 'mark_start_xhr', 'mark_end_xhr'));
-  //console.log(e.responseText);
+  reqCnt++;
+  performance.measure('measure_xhr_' + reqCnt, 'mark_start_xhr', 'mark_end_xhr');
+  console.log(e.responseText);
 }
 performance.mark('mark_start_xhr');
 myReq.send();
