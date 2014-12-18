@@ -12,6 +12,23 @@
     <![endif]-->
   </head>
   <body>
+
+    <script>
+    
+    var reqCount = 0;
+
+var myReq = new XMLHttpRequest();
+myReq.open('GET', "stylesheets/styles.css", true);
+myReq.onload = function(e) {
+  performance.mark('mark_end_xhr');
+  reqCnt++;
+  performance.measure('measure_xhr_' + reqCnt, 'mark_start_xhr', 'mark_end_xhr');
+  do_something(e.responseText);
+}
+performance.mark('mark_start_xhr');
+myReq.send();
+
+    </script>
     <div class="wrapper">
       <header>
         <h1>"Lean Websites"</h1>by <a href="http://bbinto.me">Barbara Bermes</a>
