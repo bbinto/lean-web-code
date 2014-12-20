@@ -6,16 +6,15 @@
 <title>Concat Scripts with conditional loading</title>
 <script src="concat.js"></script>
 <script src="modernizr.js"></script>
-
 </head>
 <body>
 	<h1>Concatenated</h1>
-
 <script>
 
 Modernizr.load({
   test: Modernizr.geolocation,
-  yep : 'geo.js'
+  yep : 'geo.js',
+  nope : 'bla.js'
 });
 
 </script>
