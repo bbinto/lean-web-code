@@ -1,0 +1,33 @@
+
+<!doctype html>
+<html lang=en>
+<head>
+<meta charset=utf-8 />
+<title>Concat Scripts with conditional loading</title>
+<script src="concat.js"></script>
+<script src="modernizr.js"></script>
+
+</head>
+<body>
+	<h1>Concatenated</h1>
+
+
+<button onclick="getLocation()">Where Am I?</button>
+
+<p id="mylocation"></p>
+
+<script>
+
+
+
+
+Modernizr.load({
+  test: Modernizr.geolocation,
+  yep : 'geo.js',
+  nope : 'geo.js',
+});
+
+</script>
+
+</body>
+</html>
