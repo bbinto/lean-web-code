@@ -9,15 +9,23 @@
 </head>
 <body>
 	<h1>Concatenated</h1>
-<script>
 
-Modernizr.load({
-  test: Modernizr.geolocation,
-  yep : 'geo.js',
-  nope : 'bla.js'
-});
-
-</script>
+	<script>
+		Modernizr.load({
+			test: Modernizr.inputtypes.date,
+			nope: [
+				'js/jquery.min.js',
+				'js/jquery-ui.min.js'
+			],
+			complete: function () {
+				if (window.jQuery) {
+					jQuery('input[type=date]').datepicker({
+						dateFormat: 'yy-mm-dd'
+					});
+				}
+			}
+		});
+	</script>
 
 </body>
 </html>
