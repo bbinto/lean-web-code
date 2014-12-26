@@ -8,5 +8,12 @@
 <body>
     <!-- ... -->
     <img src="https://farm3.staticflickr.com/2076/2378396331_f550196025.jpg">
+
+        <script>
+    var img = window.performance.getEntriesByName(
+  "https://farm3.staticflickr.com/2076/2378396331_f550196025.jpg")[0];
+    var dns = parseInt(img.domainLookupEnd - img.domainLookupStart);
+console.log(dns); // output 93 (in ms)
+    </script>
 </body>
 </html>
