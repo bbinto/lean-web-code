@@ -1,4 +1,24 @@
-/*!
+/* 
+* * !!HAT - Version 1.0.3 - 2014.08.07!!!!!!!!!!!!!!!!!!
+*/
+if (window.jQuery) {
+    (function($) {
+        setTimeout('TimehatDropdown()', 700);
+        setTimeout('hatResize()', 700);
+    })(jQuery);
+
+}
+
+//Omniture Tracking
+
+
+function getOmniture(val) {
+    var prop20;
+    prop20 = val.toLowerCase();
+    if (typeof(s_time) == "object") {
+        s_time.prop20 = 'gh_' + prop20 + '';
+    }
+}/*!
  * jQuery Cycle Plugin (with Transition Definitions)
  * Examples and documentation at: http://jquery.malsup.com/cycle/
  * Copyright (c) 2007-2010 M. Alsup
