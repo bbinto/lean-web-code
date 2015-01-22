@@ -44,7 +44,7 @@ module.exports = function(grunt) {
                 size: 30,
                 prefix: "button",
                 outputImage: "../img/sprites/sprites.png",
-                outputStylesheet: "../../css/sprites.css",
+                outputStylesheet: ".with/css/sprites.css",
                 magick: {
                     background: "none"
                 }
