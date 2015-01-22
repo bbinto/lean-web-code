@@ -3,8 +3,8 @@
   "title": "Magic Perf with Grunt",
   "description": "A really, really simple example how you can use Grunt for FEO",
   "version": "0.0.1",
-  "src": "src",
-  "dest": "build", 
+  "src": "without",
+  "dest": "with", 
   "publicURL": "http://localhost/grunt-magic/with",
   "author": {
     "name": "Barbara Bermes (@bbinto)"
