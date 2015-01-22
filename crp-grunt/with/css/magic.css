@@ -66,8 +66,7 @@ button {border:1px solid transparent;}
 .newsIdx .leadStory.major .cbcfg ul.captions li { width: 600px; float: none; display: none; }
 
 .secIdx .leadStory.major .cbcfg li { width: auto; }
-button.left { background: url('../img/sprites/left.png') no-repeat; width: 30px; height: 30px;}
-button.right { background: url('../img/sprites/right.png') no-repeat; width: 30px; height: 30px; }
+button { background: url('../img/sprites/sprites.png') no-repeat; width: 30px; height: 30px; }
 
 /* 1.css */
 
