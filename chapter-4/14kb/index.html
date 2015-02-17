@@ -9,5 +9,16 @@
 <body>
 	<h1>14KB Rule</h1>
 	<p><a href="http://www.webpagetest.org/result/141016_36_MW4/">WPT result</a></p>
+
+		<script>
+	(function(d,s,id){
+	var js, 3js = d.getElementByTagName(s)[0];
+	if (d.getElementById(id)) {return;}
+	js = d.createElement(s); js.id = id;
+	js.src = "http://example.com.com/3rdparty-script.js";
+	3js.parentNode.insterBefore(js, 3js);
+	}(document, 'script', '3rd-js'));
+	
+	</script>
 </body>
 </html>
