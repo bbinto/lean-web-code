@@ -1,0 +1,405 @@
+<h1 id="chapter-2-the-impact-of-information-architecture-and-design-choices-on-performance">Chapter 2: The Impact of Information Architecture and Design Choices on Performance</h1>
+
+<h2 id="warm-up">Warm up</h2>
+<p>In this chapter, you will read how information architecture, design, and performance should go hand-in-hand. Performance should already be part of the early design stage, and not just an afterthought. It starts with content organization and architecture. The reason why you want to prioritize and organize the content and its order is because you want to serve the user what they want and why they came for, in the fastest possible way.</p>
+
+<p>BB: removed the CMS part as suggested by SM, it must have been just my bad experience with the CMS that we used at the CBC, even if the design team structured it properly, the challenge was at the end to get the CMS to do it.</p>
+
+<h2 id="information-architecture">Information architecture</h2>
+
+<p>A big part of information architecture is the “wire-framing”. The goal with this part of the process is to understand the user’s experience, to plan out the user’s journey and flow while they explore your website. It’s a very important piece in the process of developing websites and it sets the tone on how the user’s journey will end up, good or bad. With so many of your competitors having a strong internet presence these days, you will need to make sure that your website lets the user do exactly what they came for. Performance should be part of this journey, because if the flow of this journey is too slow and unpleasant, your visitors will not tolerate this, and will abandon your website.</p>
+
+<p>SM: You haven’t really outlined how the two fit together though. you may go into more detail later, but I think we need something up here</p>
+
+<p>BB: Added a few more words to the above, not sure if that’s enough but I felt this was pretty self explanatory.</p>
+
+<h2 id="design-and-implementation">Design and implementation</h2>
+
+<p>I remember that once, during my time as a senior architect, I was working on a project and determined to shave off some weight of our existing mobile web pages. I came across an “oversized” company-owned site with some very high resolution thumbnails for the video playlist.</p>
+
+<p>I asked the senior web producer if they didn’t want to change this, and as a response I got back “our users don’t care about bandwidth, or mind waiting for the page to load, they want the content and hence they will wait, they are loyal”. Is that what justifies serving an unnecessary high-res thumbnail to mobile devices? Isn’t that somehow disrespectful to the user’s time and money (and their data plan charges)? While I was surprised about this  comment, I felt the need to become an even stronger advocate for teaching performance.</p>
+
+<p>“Our users don’t care about bandwidth”. How can you even prove such a hypothesis? So, are you saying people don’t mind waiting for a photo or video to load? I don’t think so. There have been <a href="http://www.bostonglobe.com/lifestyle/style/2013/02/01/the-growing-culture-impatience-where-instant-gratification-makes-crave-more-instant-gratification/q8tWDNGeJB2mm45fQxtTQP/story.html">many</a> online articles describing the impatience of our current online generation.</p>
+
+<p>As I mentioned in chapter 1, user experience is all about expectations, perception and satisfaction. While chapter 1 gave a general explanation of the law of service, I want to now share some real website examples with you, more specifically about how to tackle information architecture and perceived web performance.</p>
+
+<p>[NOTE]
+Instagram is one of the companies that really focuses on the symbiosis of design and speed. <a href="https://speakerdeck.com/mikeyk/secrets-to-lightning-fast-mobile-design">Their motivation</a> is to find solutions for how speed can be a design feature, and design can be a speed feature.
+[END NOTE]</p>
+
+<h2 id="ux-principles">UX principles</h2>
+
+<blockquote>
+  <p>“User experience encompasses all aspects of the end-user’s interaction with the company, its services, and its products.” – Jakob Nielsen</p>
+</blockquote>
+
+<p>There are several principles you can follow to achieve good user experience.  First of all, you want to make sure to know and understand the user’s goal. You want to ask yourself what is the purpose for a user coming to your website. For example, the user goals between Amazon and a public transit website are very different; while Amazon indices you to hang out for hours on their website, and making suggestion on similar products, a public transit website has another goal: to provide you with the train schedule as soon as possible. Once the user got the schedule information, they most likely will exit the site.</p>
+
+<p>Now it’s up to the UX team to make sure to support the goal. It’s worth coming up with user journeys and measure their completion time. In the example of the public transit page, you could measure how many steps it takes to find the schedule, or to get a train schedule, or to display the fares. In case of Amazon, the UX team needs to figure out how to keep the users on their site. Using cookies and logins to retrieving information from your previous visits, Amazon will want to seduce you in staying on the page by pretending to know you and more importantly your interests.</p>
+
+<p>Once you get the user to interact with your page, your call to action (CTA) should invite and provoke your visitor to respond to your content. Make sure the CTA is clearly visible and most importantly loaded by priority because even if the user can see your content, that doesn’t necessarily mean that they can also interact with it. For example, you could have a big button above the fold, inviting the user to click on “Get discount”. If the website still needs to fetch scripts before the user actually can click on it, you probably won’t make the user excited anymore to click on the button afterwards but rather annoyed.</p>
+
+<p>Here are some questions you could take as a starting point for getting a conversation with your UX/design team going.</p>
+
+<ul>
+  <li>What is the user trying to achieve?</li>
+  <li>Why did they come to your site?</li>
+  <li>How can you help them find what they are looking for (faster)?</li>
+  <li>How quickly can they get to it?</li>
+  <li>What’s your call to action (CTA) for the user and is the CTA above the fold (ATF)?</li>
+  <li>What are your <a href="http://en.wikipedia.org/wiki/Heat_map">heat maps</a> telling you?</li>
+  <li>When can the user actually start interacting with the site?</li>
+</ul>
+
+<p>[NOTE]Head map: The creation of a heat map is a useful technique that can tell you how popular each part of your page is. It’s collected by actually visitors data.[NOTE END]</p>
+
+<p>SM: Rather than just providing a list of questions, I think it would be better to actually outline the principles You could still list the questions after as a way to reinforce the points</p>
+
+<p>BB: Added more concrete, detailed information.</p>
+
+<h2 id="wireframes">Wireframes</h2>
+
+<p>Wire-framing gives visual guidance on how your website should be represented. You can also call it drawing the skeleton of your website. It’s basically your first step in outlining how the website should look and behave. There is a great opportunity here to do the wire-framing with performance in mind. Instead of working backwards by fixing performance issues after, make performance part of the wireframes. Making good performance choices at this step will save you a lot of time afterwards to fix any performance issues.</p>
+
+<p>Thankfully, I’ve worked with design teams who really appreciated my passion for web performance</p>
+
+<p>SM: Not according to the anecdote above?
+BB: I did, the one I was referring to was a web developer/producer</p>
+
+<p>, especially when creating mobile web experiences. Often times, a designer would come over to the development area and ask us if we had any performance concerns on specific design choices: displaying, for example, ten thumbnails as opposed to five thumbnails on a specific page. This was a great way of communicating expectations; exchanging knowledge and helping them learn more about performance.</p>
+
+<p>SM: This is all cool, but it seems a little early to be giving this advice – assume the readers know little about performance at this point in the book. It would seem that this would be better presented after you’ve imparted more info on how to optimize performance and the factors that impact on it?</p>
+
+<p>BB: Ok, moved the tips section to chapter 4 for now, although I didn’t want to talk too much about wire framing later</p>
+
+<h2 id="working-with-perceived-web-performance">Working with perceived web performance</h2>
+
+<p>Fake it ‘til you make it.</p>
+
+<p>Following this catchphrase can potentially help you make your website feel fast(er) for your users. There are several techniques out there that help you “fake it”. Let’s have a look at what you can do to make your website visitors “believe” your website is responsive and speedy.</p>
+
+<p>[TIP]The rule of thumb to remember is that people won’t notice when your site is fast, but they will notice and feel it when it loads slowly.[END TIP]</p>
+
+<p>As we have learned in chapter 1, people should not be bothered with boredom while waiting for web content to load. Something feels fast if you are presented with a responsive system, are being kept in the loop of the progress, and of course, if the request you made on a page was successfully executed.</p>
+
+<p>Here are some tricks that can increase perceived performance:</p>
+
+<ul>
+  <li>Cheating, as in pretending to “work”: with many modern browsers now supporting offline caching, it’s <em>your</em> chance to leverage this. Register events to the browser before they are being sent over the wire, this is what <a href="http://www.fastcodesign.com/1669788/the-3-white-lies-behind-instagrams-lightning-speed">Instagram</a> does and has successfully helped them create fast user experiences. Instagram always pretends to work; Instead of waiting for the server to respond to the photo upload, the offline cache already presents the photo the user just attempted to upload. Only shortly after is the photo actually send to the server. If you pay attention to the loading spinner in your mobile browser, you can spot this trick yourself.</li>
+</ul>
+
+<p>SM: think we need more detail here. Not clear.
+BB: added some stuff, hope that’s more clear</p>
+
+<ul>
+  <li>Present instant feedback and progress about how far along the user is on their journey through your site</li>
+  <li>Above the fold (ATF): Place the important but necessary, not heavy functionality on top of the page. By showing the user early on the important content without them having to scroll, the perceived performance increased by not having them find the information first. The time to interact with the ATF content results in fast perceived performance. Find out what the most common screen size of your visitors is and work off of that.</li>
+</ul>
+
+<p>SM: how does this increase perceived importance?
+SM: the fold may depend on the user’s hardware, preferred window size, etc. Is there some standard for where the fold appears that you might apply?
+BB: I hope it’s a bit clearer now, added some more detail.</p>
+
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=7ubJzEi3HuA">Rumour</a> has it that the “create blog” button for Google’s Blogger application initiated the creation of a blog so “lighting” fast, that people were questioning if it actually did anything. What Google decided to do is add a spinner that extended and “faked” the blog creation time</li>
+</ul>
+
+<p>SM: not sure of relevance here? this is actually doing the opposite?
+BB: It’s an example for perceived performance even if it’s the opposite. If you feel it doesn’t belong here, feel free to erase it.</p>
+
+<ul>
+  <li>Don’t make the user wait: Try to avoid having too many hoops your user has to go through to get to their goal. The example below shows how many screen switches it takes to get to a new follower’s twitter profile page after you received an email notification.</li>
+</ul>
+
+<p><img src="images/2-twitter-ux.png" alt="UX journey " /></p>
+
+<ol>
+  <li>Click on the link in my email</li>
+  <li>The browser opens, goes to twitter.com</li>
+  <li>It detects I’m on a mobile and tries to open the native iOS app</li>
+  <li>Loads the mobile app</li>
+  <li>Displays Paul’s profile page</li>
+  <li>Thank you! I’m done</li>
+</ol>
+
+<p>The three steps in the middle could have been avoided. Letting the user view the content right away via the default way, in this case, via the browser would have been faster.</p>
+
+<p>Another approach that seems perfect but yet difficult to accomplish, is the pro-active or preemptive performance approach. It basically means to load something before the user actually wants it. That however requires a lot more intelligence and proper guessing. An example of <a href="http://java.dzone.com/articles/mobile-ux-refining-perceived">preemptive performance</a> could be Instagram’s photo upload functionality. They upload the selected image already before you hit the upload button, they assume that’s the next action you will be executing. This is not always recommended as it might backfire on you, e.g. some countries don’t tolerate such action without having the consent of the user to store personal data. If the user ends up deciding to not upload the image for any kind of reasons, Instagram has it and owns it. Or if you don’t have a good data plan on your mobile device and want to save bandwidth, this could really annoy you as you didn’t actually want to upload the photo after all. The data concern is especially important if your web app is mainly used on mobile devices.</p>
+
+<p>Newer browsers have started to adopt the mentioned preemptive approach and began to support specific techniques: <code>prefetch</code> and <code>prerender</code> attributes for <code>src</code> elements make the browser look a head of resources that might be needed. The bootcamp chapter will go into more details.</p>
+
+<p>AB: Also prefetch / prerender?   If not, may be worth saying why they don’t fit here.
+BB: I already had this in there but took it out again, will discuss this in chapter 4 in more detail, I think it might be too early to go into too much detail, hence I just briefly mentioned it</p>
+
+<h3 id="case-study-hardware-store">Case Study: Hardware store</h3>
+
+<p>Let’s check out the following example. I’ve compared two different hardware stores with each other. Let’s assume that generally the reason users visit their pages is:</p>
+
+<ul>
+  <li>to search for (the availability) of a product</li>
+  <li>to look for any discounts</li>
+  <li>to purchase a product online</li>
+  <li>to use the store locator</li>
+</ul>
+
+<p>What should your designers focus on when designing this scenario? The area above the fold should accommodate most of the user goals outlined above, e.g. show discounts, have the store locator visible at the top, and based on <a href="http://www.webperformancetoday.com/2010/06/15/everything-you-wanted-to-know-about-web-performance/">research</a> about abandonment of websites, playing it safe with a target load of <a href="https://blog.kissmetrics.com/loading-time/">under 3 seconds</a>.</p>
+
+<p>Below you can see a filmstrip for Time.com, created by WebPagetest (see more later on in this chapter). The filmstrip visualizes the loading of the page, making it easy to identify when content starts to appear on the screen, also referred to as the ATF content.</p>
+
+<p><img src="images/2-ux-abovethefold.png" alt="http://www.webpagetest.org/video/compare.php?tests=140802_MY_EWT%2C140802_BD_EWV&amp;thumbSize=200&amp;ival=100&amp;end=visual" />
+<em>WebPageTest Comparison via filmstrip to illustrate the above the fold interaction under 3 seconds.</em></p>
+
+<p>As the filmstrips above reveal, Home Depot’s website loads pretty fast in comparison to Lowe’s website. To most website visitors, Home Depot will <em>feel</em> faster than Lowe’s, because most parts of the website, or at least the ones the user mostly cares about, will load in around two seconds. In this context, the total time taken to load is less important. </p>
+
+<h3 id="case-study-news">Case Study: News</h3>
+
+<p>What about news sites? When important news break, users are most concerned with reading the story related to the breaking news first. Most likely, they immediately want to know the main title of the news accompanied by a story image. As a content provider, you should make sure that these elements are being loaded first, and what I mean by that: as soon as possible.</p>
+
+<p>The below screenshot compares a list of filmstrips from different news sites. I used WebPagetest again to plot three different news makers; Time Magazine, Washington Post and the Guardian. It won’t take you long to see how each ATF content loads in comparison to the other pages. </p>
+
+<p><img src="images/2-ux-abovethefold-news.png" alt="http://www.webpagetest.org/video/compare.php?tests=140807_BR_WX%2C140807_2V_WY%2C140807_FJ_WZ&amp;thumbSize=100&amp;ival=500&amp;end=visual" />
+<em>WebPageTest Comparison via filmstrip to illustrate the above the fold interaction under 3 seconds.</em></p>
+
+<p>The Washington Post website is the clear winner in this “ATF race”. Showing the main story including title and image after two seconds is definitely admirable and something the other news sites should follow. Even after almost six seconds, the Time Magazine website has not loaded the main story image nor its title yet.</p>
+
+<p>Both case studies demonstrate that putting effort into defining the importance and priority of each content piece on your page will help your user achieve their goal faster. The following section suggests a simple approach to help everyone in your organization to start focusing on that. </p>
+
+<h3 id="the-performance-point-system">The performance point-system</h3>
+<p>I’d like to introduce you to a system that might be fun and easy to get started with, especially when you work with the design team. I’ve written about this before in my <a href="http://www.bbinto.me/mobile/applying-weight-loss-paradigms-to-web-performance-the-page-weight-points-system/">blog</a>. The idea behind a point system is to give the pre-development, non-technical members of the team a simple way to understand what components of a website could be considered “heavy”, and which elements promise success and fast perceived performance. It’s about divide and conquer, and indeed, this methodology can also be applied to websites; the more we can break down the visual elements of a site and the wireframe into measurable performance modules (MPM), the better we can move them around and arrange them to accomplish not only an intuitive information architecture but also a great and responsive user experience. </p>
+
+<p>Each module gets a number assigned which defines its performance impact. At the end of the wire-framing process, all modules are summed up and reveal a score, the lower the number, the better the expected performance.</p>
+
+<p>Maybe not the same as it applies to dieting in the real world, this approach suggests that you don’t have to <em>starve</em> your website by following performance patterns. A lean website in the context of this book does not refer to a website that is lacking any information or interaction or less user experience. It only means that the website has been created with the concept of applying and following web performance paradigms, of which I will go into more detail in chapter 4.</p>
+
+<p>One important thing to mention: you can’t really compare calories with kilobytes, because it all depends on the kind of macronutrients, the nutrients that provide calories and energy (carbohydrates, protein, and fat). Fat provides twice as much calories than carbohydrates and protein. While carbohydrates are the body’s main source of fuel and energy, protein is the source for growth, and fat as well serves as an energy booster while providing “cushioning” for the organs. Hence, you might want to figure out your own macronutrients for your site to decide on the different calories and energy or “success” levels.</p>
+
+<p>AB: I’m not sure the nutrition analogy is quite correct, though this isn’t my area at all!  But I know sugar is a form of carb, and all carbs can make you feel tired and lazy if you eat too many of them (eg if you have a huge pasta dish for lunch).  I might be an exception but if I eat sugar I get a rush of energy.
+BB: changed this to be more clearer with a bit more details, thanks for the comment.</p>
+
+<h4 id="measurable-performance-modules-mpm">Measurable performance modules (MPM)</h4>
+
+<p>A measurable performance module (MPM) describes a simplified and single performance unit in a wireframe. Its main purpose is to help non-technical members of the design and content team understand its performance impact to the overall website.</p>
+
+<p>This might not be the most scientific translation of (perceived) performance but it definitely is a good start to get everybody on the same page during the early stages of the project, the wire-framing and design part.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Module</th>
+      <th style="text-align: left">Points</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Low impact</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">Small images, mostly static content and simple graphics, interaction elements like buttons and text fields</td>
+    </tr>
+    <tr>
+      <td>Medium impact</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">medium-sized images and simple scripts</td>
+    </tr>
+    <tr>
+      <td>High impact</td>
+      <td style="text-align: left">6</td>
+      <td style="text-align: left">large images and 3rd party scripts loading either only heavy JavaScript or both, JavaScript and images (e.g ads)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Sit down with your design team, take a pencil and start marking MPMs in the wireframe. Based on the table above, try to identify what modules on the wireframe represent low, medium or high performance impacts, e.g. comparing it to the calorie analogy previously mentioned, what modules promise success or energy boosts as opposed to potential high performance impact modules that don’t give much value to the customer, e.g. a heavy JavaScript widget that isn’t clicked very often and should rather sit somewhere further down the page, or leave it at the top but load it later on. Another technique that could be applied during this process is showing “dummy content” or “placeholders”. Instead of showing the breaking news image, have a generic news logo or something that keeps the user engaged and with the anticipation that there is more coming.</p>
+
+<p>SM: How? Need more detail here.
+BB: added more stuff</p>
+
+<p>This will be useful and beneficial for the developer who will take on the wireframes after to help him plan out the more technical approach by setting up the critical rendering path. </p>
+
+<p>[NOTE]The critical rendering path goes into more technical analysis on what components (visual and non-visual) of the websites should be prioritized and be loaded for the first initial view of the page. It also reveals which once could be dangerously blocking important content from rendering.[END NOTE]</p>
+
+<p>SM: This is bit distracting — if you do want to mention it, I think it might be better to place it in a note box. 
+BB: changed it to a note box.</p>
+
+<p>The end goal of this exercise is to have the entire team on the same page, and to share the same vision; to load and show the content as efficient as possible.</p>
+
+<p>SM: I  might suggest re-structuring this part of the chapter a little. I think I would explain the points system, then MDMs conceptually, then have a “Case Study: Time Magazine website” section to demo it, with further subsections for looking at the site currently, then looking at how it could be optimized. At the moment, the Time magazine case study is spread over several sections – I think it would be better to present it neatly in its own section.
+BB: I did, let me know what you think, I agree it’s easier to read.</p>
+
+<h4 id="case-study-time-magazine-website">Case Study: Time Magazine website</h4>
+
+<p>The following case study is used to show you how you can improve wire-framing by keeping performance in mind.</p>
+
+<p>Let’s take a look at the Time Magazine website.</p>
+
+<p><img src="images/2-time.png" alt="Time's wireframe" />
+<em>Time.com filmstrip screenshot</em></p>
+
+<p>We can see in the filmstrip above, the main story image only appears after around six seconds. There is no visible content prior to that. I’ve broken this further down in simple wireframes to illustrate how the site, above the fold, loads after time.</p>
+
+<p>Let’s have a closer look at the current order.</p>
+
+<p><img src="images/2-wf-time-3s.png" alt="Time's wireframe" />
+<em>After 3 seconds, we only see the menu and the magazine image</em></p>
+
+<p><img src="images/2-wf-time-57s.png" alt="Time's wireframe" />
+<em>After around 5.7 seconds, slowly other important pieces are being loaded</em></p>
+
+<p><img src="images/2-wf-time-75s.png" alt="Time's wireframe" />
+<em>After 7.5 seconds, most of the visible content above the fold has been loaded</em></p>
+
+<p>There is definitely room for improvement, especially if our goal is to show the top story element as soon as possible, in our target time of less than three seconds. </p>
+
+<h5 id="current-performant-order-based-on-mdms">Current performant order based on MDMs</h5>
+
+<p>Let’s see how we can apply the point and order system to their wireframe.</p>
+
+<p>The wireframe was sketched based on one of the <a href="http://www.w3schools.com/browsers/browsers_display.asp">most common screen sizes</a> of today: 1366x768 pixels.
+If you know your visitor’s most used screen size, sketch it out based on that.</p>
+
+<p><img src="images/2-wf-time-mpm.png" alt="Time's wireframe" />
+<em>Time.com wireframe</em></p>
+
+<p><img src="images/2-wf-time-order.png" alt="Time's wireframe" />
+<em>Time.com wireframe, including MPMs with order of appearance</em></p>
+
+<p>I plotted the MPMs onto the wireframe in the image above, indicated by the dotted boxes. The number in each box describes the order of which this box appeared on the screen, e.g. the menu box was loaded first.</p>
+
+<p>ATF count:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th style="text-align: left">Module</th>
+      <th style="text-align: left">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>10</td>
+      <td style="text-align: left">Low impact</td>
+      <td style="text-align: left">10</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td style="text-align: left">Medium impact</td>
+      <td style="text-align: left">4</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td style="text-align: left">High impact</td>
+      <td style="text-align: left">12</td>
+    </tr>
+    <tr>
+      <td><strong>14</strong></td>
+      <td style="text-align: left"><strong>Total</strong></td>
+      <td style="text-align: left"><strong>26</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>By checking the file sizes, the above the fold filmstrip as well as the nature of each content type (images tend to be heavier than simple text), you can go ahead and define MPMs and their impact. As mentioned before, this is mainly intended to bring design and developers together to quickly sketch out performance impacts of the different content modules. It lets you easily circle out elements that might be too heavy to present on the ATF.</p>
+
+<p>Sm: How did you you come to these totals? how do you determine what score each MDM got? More detail, please.
+BB: Good point, added some explanation.</p>
+
+<h5 id="suggested-performant-order-based-on-mdms">Suggested performant order based on MDMs</h5>
+
+<p>Although Time.com uses progressive JPEGs for their main story image, it seems that the image doesn’t get the early attention it needs, don’t you think? Something in the code seems to be in the way so that a user only sees it after 5.7 seconds.</p>
+
+<p>Even if the main news image is an high impact module, I would argue it is important to load this image as early as possible. So my proposed performant wireframe for Time.com could look like the following:</p>
+
+<p><img src="images/2-wf-time-performant.png" alt="Time's wireframe" />
+<em>Time.com performant wireframe</em></p>
+
+<p><strong>New</strong> ATF count:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th style="text-align: left">Module</th>
+      <th style="text-align: left">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>12</td>
+      <td style="text-align: left">Low impact</td>
+      <td style="text-align: left">12</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td style="text-align: left">Medium impact</td>
+      <td style="text-align: left">6</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td style="text-align: left">High impact</td>
+      <td style="text-align: left">6</td>
+    </tr>
+    <tr>
+      <td><strong>16</strong></td>
+      <td style="text-align: left"><strong>Total</strong></td>
+      <td style="text-align: left"><strong>24</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>I decreased the image height and width of the main story image, placing more context next to the image by aligning the headline and description on to the right. I also replaced the stock widget with a CTA button that the user has to press. Only when pressed will the stock data be loaded, which can somewhat reduce the ATF load time.</p>
+
+<p>You probably have figured it out by now, I put some loading numbered priorities in the wireframe so the developer knows where to put their focus on when planning out the critical rendering path.</p>
+
+<p>AB: This is a neat way of making performance visible.  Like it.  But I’m concerned you’re diluting this point a bit by implying that you can’t have striking imagery if you want good performance.
+BB: Good point, it’s more about setting a budget and sticking to it, swapping things, changing things but I can see why people could take that striking imagery is bad. Added some stuff in the next paragraph.</p>
+
+<p>If you are not sure about what widgets and elements should be either removed or moved down below the fold, verify if it’s actually used by your visitors, use heat maps or analytics of clicks, to prove your assumption before removing it. And if you all agree that a heavy image (high impact MPM) should be placed above the fold, make sure to balance your performance budget with other low and medium impact modules.</p>
+
+<p>Please remember, a performant wireframe is not enough to make your website feel fast but it’s an excellent start on your journey to a lean website.</p>
+
+<p>[NOTE]
+There performance point systems aims to measure performance which encompasses more than just page load time, it is also manifested in perception of speed, time to interact and the actual render time.
+[NOTE END]</p>
+
+<p>AB: I am sturggling with this one.  To me, page load speed is a subset of performance (because overall performance also encompasses things like perception of speed, time to interaction, and render time), so I’m surprised that performance is only contributory to page load speed.  I’d imagine it would be the other way around.
+BB: Not really sure what specific sentence or paragraph you are referring to? The overall section? I changed the title of the section to performance point system. In addition, I added a note box which I hope makes it clear. </p>
+
+<p>BB: removed the entire CMS section based on SM’s concerns. I might bring this back up in the bootcamp chapter. Might be a better fit.</p>
+
+<h2 id="speed-matters---everybody-cares-even-google">Speed matters - everybody cares, even Google</h2>
+
+<p>It’s not only that you make the user happy when you make your site responsive and fast, or that you reduce operation and server costs with serving less bytes over the wire. There is another benefit of focusing on how fast your website can be delivered to your users; it’s not a secret any more that Google has made it <a href="http://www.thinkwithgoogle.com/articles/the-google-gospel-of-speed-urs-hoelzle.html">official</a> that their search ranking algorithm takes page speed seriously and lists results based on exactly that. This goes back to a <a href="http://googlewebmastercentral.blogspot.ca/2010/04/using-site-speed-in-web-search-ranking.html">blog post</a> Google released in 2010, they said “(…) users place a lot of value in speed — that’s why we’ve decided to take site speed into account in our search rankings.”</p>
+
+<p>This is especially important when you have to deal with a lot of competitor products and websites. Being faster than your competitor definitely puts you ahead of the curve when somebody is googling for a service that you offer.</p>
+
+<p>The Alexa rank measures the popularity of websites compared to all the other websites in the internet universe. Their metrics are based on page views and visitors to those sites.</p>
+
+<p>Some <a href="http://bigqueri.es/t/are-popular-websites-faster/162">research</a> has been done on top ranked pages and their speed recently, more specifically if the popularity of a website correlates with the <em>renderStartTime</em>.
+<em>renderStartTime</em> will be discussed in more detail in chapter 3 and 4 but for now, let’s say it’s a metric that measures the time when the browser starts to “paint” content on the screen. It’s a helpful measurement in the context of perceived performance. If a user can “see” content, it makes them feel that the website is ready to be browsed. However, the <em>renderStartTime</em> does not tell the user that the entire content of the page has loaded, so even if you can view content, it doesn’t mean you can actually interact with it yet.</p>
+
+<p>AB: This is an important point and I think potentially under-delivered at the moment.  Last I heard, Facebook uses a metric called TTI (time to interaction) to measure their page load perf.  Not interested in load or DOMContentLoaded, they’re more interested in whether the page is smoothly scrollable yet, and whether the user can click stuff.</p>
+
+<p>SM: This should potentially go in Chapter 1, rather than here?
+BB: Funny, I kept on moving it back and forth from chapter 2 to chapter 1 but decided to put it in chapter 2. I’m fine either or and let you decide, SM. If moved to chapter 1, it could go at the end, right before the Cool down?</p>
+
+<h2 id="cool-down">Cool down</h2>
+
+<p>What did you learn in this chapter?</p>
+
+<p>Let’s recap what has been discussed:</p>
+
+<ul>
+  <li>You’ve been introduced to ways on how designers and yourself can take performance into consideration and plan it out, early on.</li>
+  <li>You’ve learned how to fake a fast website</li>
+  <li>Ideas and ways how to think about perceived performance and the above the fold rule, i.e. what are the most important visual items for your business to show first and have the user interact with immediately.</li>
+  <li>Ideas on how to approach and work with the design team, including the introduction of a performance point system and MDMs.</li>
+  <li>You’ve learned that Google cares how fast your website loads.</li>
+</ul>
+
+<p>You’ve probably noticed yourself after reading this chapter, one of the most important rules for performance is quantifying that performance is either good or bad. While perceived performance is an important aspect of web performance, there is also the actual performance which you can only be determined by measuring and monitoring. You can’t improve something that you haven’t measured first.</p>
+
+<p>The next chapter will introduce you to several important monitoring and measuring metrics, techniques and tools.</p>
+
+<p>AB: A final thought about ‘IAs’.  At the FT, there are no information architects.  We do IA, but it’s a responsibity of the design team, and no-one talks about IA specificially.  I know the Guardian go further, in that they just have a discipline called ‘design’ that encompasses visual design, UX and IA (at the FT we split out UX, but to us it’s a research function).  The BBC has no designers, they just have ‘UX’, which is what they call design.  No idea if they have IAs but never heard them talk about them.  So it may be worth making some of the language a bit more accessible to those who might not have the same job roles that you’ve been most familiar with.
+BB: Thanks for pointing this out, I made this more generic by saying “designers” or “design team”.</p>
