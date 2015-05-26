@@ -1,0 +1,42 @@
+<html>
+  <title>60fps</title>
+
+  <style>
+    .mover {
+        position: absolute;
+        width: 46px;
+        height: 100px;
+        background: url("2.png") center no-repeat;
+        right: 90%;
+        -webkit-transition: right 1.5s ease-out;
+           -moz-transition: right 1.5s ease-out;
+            -ms-transition: right 1.5s ease-out;
+             -o-transition: right 1.5s ease-out;
+                transition: right 1.5s ease-out;
+    }
+    .mover.right {
+        right: 10%;
+    }
+	</style>
+</head>
+<body>
+ 	<div class="mover"></div>
+
+<script>
+    var movers = document.querySelectorAll('.mover');
+    function update() {
+		movers[0].className = 'mover right';
+        requestAnimFrame(update);
+    }
+    window.addEventListener('load', update, false);
+    window.requestAnimFrame = (function(){
+      return function( callback ){
+                window.setInterval(callback, 1000 / 60);
+              };
+    })();
+
+</script>
+
+
+</body></html>
+
